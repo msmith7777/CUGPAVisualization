@@ -15,10 +15,17 @@ typedef struct Course{
     int count;
 
     struct Course* next;
-
-
 }Course;
 
+//Free a Course struct
+void freeCrs(Course* course) {
+    free(course -> crs);
+    free(course -> crsNumber);
+    free(course -> crsTitle);
+    free(course -> instructor);
+    free(course -> honors);
+    free(course);
+}
 /*
 Create a struct. Arguements, in order, are course, course number, course title, total gpa, 
 total withdraw rate, instructor name, and whether it's honors
@@ -70,7 +77,7 @@ void mergeCourses(Course* crs1, Course* crs2) {
     crs1 -> count += 1;
     crs1 -> avgGpa = (crs1 -> avgGpa*  (crs1 -> count - 1) + crs2 -> avgGpa) / (crs1 -> count);
     crs1 -> avgWRate = (crs1 -> avgWRate*  (crs1 -> count - 1) + crs2 -> avgWRate) / (crs1 -> count);
-    free(crs2);
+    freeCrs(crs2);
 }
 
 //Insert one node between a given node and it's neighbor
