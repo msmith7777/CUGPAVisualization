@@ -31,7 +31,7 @@ Create a struct. Arguements, in order, are course, course number, course title, 
 total withdraw rate, instructor name, and whether it's honors
 */
 Course* createCourse(char* str, char* str2, char* str3, double gpa, double wRate, char* str4, char* str5) {
-    Course* newNode = malloc(sizeof(Course));
+    Course* newNode = calloc(1, sizeof(Course));
     if (newNode == NULL) {
         printf("Malloc failed.\n");
         return NULL;
@@ -77,6 +77,8 @@ void mergeCourses(Course* crs1, Course* crs2) {
     crs1 -> count += 1;
     crs1 -> avgGpa = (crs1 -> avgGpa*  (crs1 -> count - 1) + crs2 -> avgGpa) / (crs1 -> count);
     crs1 -> avgWRate = (crs1 -> avgWRate*  (crs1 -> count - 1) + crs2 -> avgWRate) / (crs1 -> count);
+
+    //crs2 is not part of the linked list, so this is fine
     freeCrs(crs2);
 }
 
