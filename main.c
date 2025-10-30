@@ -5,16 +5,16 @@
 //Create struct to represent wanted data
 typedef struct Course{
 
-    char crs[10];
-    char crsNumber[10];
-    char crsTitle[64];
+    char* crs;
+    char* crsNumber;
+    char* crsTitle;
     double avgGpa;
     double avgWRate;
-    char instructor[64];
-    char honors[5];
+    char* instructor;
+    char* honors;
     int count;
 
-    struct Course *next;
+    struct Course* next;
 
 
 }Course;
@@ -23,27 +23,18 @@ typedef struct Course{
 Create a struct. Arguements, in order, are course, course number, course title, total gpa, 
 total withdraw rate, instructor name, and whether it's honors
 */
-Course *createCourse(char *str, char *str2, char *str3, double gpa, double wRate, char *str4, char *str5) {
-    Course *newNode = malloc(sizeof(Course));
+Course* createCourse(char* str, char* str2, char* str3, double gpa, double wRate, char* str4, char* str5) {
+    Course* newNode = malloc(sizeof(Course));
     if (newNode == NULL) {
         printf("Malloc failed.\n");
-        exit(1);
+        return NULL;
     }
 
-    strncpy(newNode -> crs, str, sizeof(newNode -> crs) - 1);
-    newNode -> crs[sizeof(newNode -> crs) - 1] = '\0';
-
-    strncpy(newNode -> crsNumber, str2, sizeof(newNode -> crsNumber) - 1);
-    newNode -> crsNumber[sizeof(newNode -> crsNumber) - 1] = '\0';
-
-    strncpy(newNode -> crsTitle, str3, sizeof(newNode -> crsTitle) - 1);
-    newNode -> crsTitle[sizeof(newNode -> crsTitle) - 1] = '\0';
-
-    strncpy(newNode -> instructor, str4, sizeof(newNode -> instructor) - 1);
-    newNode -> instructor[sizeof(newNode -> instructor) - 1] = '\0';
-
-    strncpy(newNode -> honors, str5, sizeof(newNode -> honors) - 1);
-    newNode -> honors[sizeof(newNode -> honors) - 1] = '\0';
+    newNode -> crs = strdup(str);
+    newNode -> crsNumber = strdup(str2);
+    newNode -> crsTitle = strdup(str3);
+    newNode -> instructor = strdup(str4);
+    newNode -> honors = strdup(str5);
     
     newNode -> avgGpa = gpa;
     newNode -> avgWRate = wRate;
@@ -58,15 +49,15 @@ Course *createCourse(char *str, char *str2, char *str3, double gpa, double wRate
 Compare data in 2 Course structs. If course AND instructor name AND honors is the same, return 0. 
 If just course name is the same, return 1. If neither, return 2.
 */
-int crscmp(Course *crs1, Course *crs2) {
+int crscmp(Course* crs1, Course* crs2) {
     int numCmp = strcmp(crs1 -> crs, crs2 -> crs);
-    int crsNumber = strcmp(crs1 -> crsNumber, crs2 -> crsNumber);
+    int crsNumberCmp = strcmp(crs1 -> crsNumber, crs2 -> crsNumber);
     int instrCmp = strcmp(crs1 -> instructor, crs2 -> instructor);
     int hnrsCmp = strcmp(crs1 -> honors, crs2 -> honors);
 
-    if (numCmp == 0 && crsNumber == 0 && instrCmp == 0 && hnrsCmp == 0){
+    if (numCmp == 0 && crsNumberCmp == 0 && instrCmp == 0 && hnrsCmp == 0){
         return 0;
-    } else if (numCmp == 0 && crsNumber == 0) {
+    } else if (numCmp == 0 && crsNumberCmp == 0) {
         return 1;
     }
     return 2;
@@ -75,29 +66,29 @@ int crscmp(Course *crs1, Course *crs2) {
 /*Merge 2 entries of a Course struct by averaging values. The 2nd course is the new one. !!DO NOT
 CALL THIS ON A COURSE IN THE LIST!!
 */
-void mergeCourses(Course *crs1, Course *crs2) {
+void mergeCourses(Course* crs1, Course* crs2) {
     crs1 -> count += 1;
-    crs1 -> avgGpa = (crs1 -> avgGpa * (crs1 -> count - 1) + crs2 -> avgGpa) / (crs1 -> count);
-    crs1 -> avgWRate = (crs1 -> avgWRate * (crs1 -> count - 1) + crs2 -> avgWRate) / (crs1 -> count);
+    crs1 -> avgGpa = (crs1 -> avgGpa*  (crs1 -> count - 1) + crs2 -> avgGpa) / (crs1 -> count);
+    crs1 -> avgWRate = (crs1 -> avgWRate*  (crs1 -> count - 1) + crs2 -> avgWRate) / (crs1 -> count);
     free(crs2);
 }
 
 //Insert one node between a given node and it's neighbor
-void insertNode(Course *crs1, Course *crs2) {
-    Course *nextnext = crs1 -> next;
+void insertNode(Course* crs1, Course* crs2) {
+    Course* nextnext = crs1 -> next;
     crs1 -> next = crs2;
     crs2 -> next = nextnext;
 }
 
 // Merge node with a matching course or group it with others of the same course and number
-void addNode(Course **head, Course *node) {
+void addNode(Course** head, Course* node) {
     if (*head == NULL) {
-        *head = node;
+     *head = node;
         return;
     }
 
-    Course *current = *head;
-    Course *save = *head;
+    Course* current = *head;
+    Course* save = *head;
     //Iterate through the linked list
     while (current != NULL) {
         int crsCmp = crscmp(current, node);
@@ -130,11 +121,66 @@ void addNode(Course **head, Course *node) {
     node -> next = NULL;
 }
 
-/*Argument is a line from the CSV. Extract useful information from the line, assign a Course to
-that data, and add the Course to the linked list
+/*Arguements are a line of CSV and token. Checks if token starts with quotes, and, if it does, 
+returns ptr to the full field, ignoring commas between. TODO: fix.
 */
-void parseCSV(char *line) {
-    
+char* checkQuotes(char* line, char* token) {
+    if (token == '"') {
+            char* buff;
+            buff = strdup(token);
+
+            while (buff + sizeof(buff) - 1 != '"') {
+                strcat(buff, ",");
+                token = strtok(NULL, ",");
+                strcat(buff, token);
+            }
+            return buff;
+    }
+    return token;
+}
+
+/*
+Argument is a line from the CSV and expected number of fields. Extract useful information from the line, 
+assign a Course to that data, and return the pointer to the course. TODO: finish
+*/
+Course* parseCSV(char* line, int numFields) {
+    char* crs;
+    char* crsNum;
+    char* crsTitle;
+    double avgGpa;
+    double avgWRate;
+    char* instructor;
+    char* honors;
+
+    int i = 0;
+    char* token = strtok(line, ",");
+
+    while (token && i < numFields) {
+        switch (i) {
+            case 0:
+                crs = strdup(token);
+                break;
+            case 1:
+                crsNum = strdup(token);
+                break;
+            case 2:
+                crsTitle = strdup(token);
+                break;
+            case 3:
+
+                break;
+            case 4:
+                break;
+            case 5:
+                instructor = checkQuotes(line, token);
+                break;
+            case 6:
+                honors = strdup(token);
+                break; 
+        }
+        char* token = strtok(line, ",");
+        i++;
+    }
 }
 int main() {
 
