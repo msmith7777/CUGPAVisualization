@@ -26,9 +26,20 @@ void freeCrs(Course* course) {
     free(course -> honors);
     free(course);
 }
+
+//Free the linked list
+void freeList(Course* head) {
+    Course* save;
+    while(head != NULL) {
+        save = head -> next;
+        freeCrs(head);
+        free(head);
+        head = save;
+    }
+}
 /*
 Create a struct. Arguements, in order, are course, course number, course title, total gpa, 
-total withdraw rate, instructor name, and whether it's honors
+total withdraw rate, instructor name, and honors ("H\n" for honors, "\n" if not"
 */
 Course* createCourse(char* str, char* str2, char* str3, double gpa, double wRate, char* str4, char* str5) {
     Course* newNode = calloc(1, sizeof(Course));
@@ -134,11 +145,11 @@ void addNode(Course** head, Course* node) {
 returns ptr to the full field, ignoring commas between. TODO: fix.
 */
 char* checkQuotes(char* line, char* token) {
-    if (token == '"') {
+    if (token[0] == '"') {
             char* buff;
             buff = strdup(token);
 
-            while (buff + sizeof(buff) - 1 != '"') {
+            while (buff[strlen([buff] - 1)]) {
                 strcat(buff, ",");
                 token = strtok(NULL, ",");
                 strcat(buff, token);
@@ -150,14 +161,14 @@ char* checkQuotes(char* line, char* token) {
 
 /*
 Argument is a line from the CSV and expected number of fields. Extract useful information from the line, 
-assign a Course to that data, and return the pointer to the course. TODO: finish
+assign a Course to that data, and return the pointer to the course. If class is pass-fail, return NULL.
 */
 Course* parseCSV(char* line, int numFields) {
     char* crs;
     char* crsNum;
     char* crsTitle;
-    double avgGpa;
-    double avgWRate;
+    double avgGpa = 0;
+    double avgWRate = 0;
     char* instructor;
     char* honors;
 
@@ -171,14 +182,22 @@ Course* parseCSV(char* line, int numFields) {
                 break;
             case 1:
                 crsNum = strdup(token);
+                strtok(NULL, ",");
                 break;
             case 2:
                 crsTitle = strdup(token);
                 break;
             case 3:
-
+                for (int j = i; j <= 7; j++) {
+                    avgGpa += atoi(token) / (7 - j);
+                    strtok(NULL, ",");
+                }
+                if (atoi(strtok(NULL, ",")) != 0 || atoi(strtok(NULL, ",")) != 0 ) {
+                    return NULL;
+                }
                 break;
             case 4:
+                avgWRate = atoi(token);
                 break;
             case 5:
                 instructor = checkQuotes(line, token);
@@ -187,9 +206,10 @@ Course* parseCSV(char* line, int numFields) {
                 honors = strdup(token);
                 break; 
         }
-        char* token = strtok(line, ",");
+        char* token = strtok(NULL, ",");
         i++;
     }
+    return createCourse(crs, crsNum, crsTitle, avgGpa, avgWRate, instructor, honors);
 }
 int main() {
 
