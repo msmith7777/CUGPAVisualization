@@ -33,10 +33,10 @@ void freeList(Course* head) {
     while(head != NULL) {
         save = head -> next;
         freeCrs(head);
-        free(head);
         head = save;
     }
 }
+
 /*
 Create a struct. Arguements, in order, are course, course number, course title, total gpa, 
 total withdraw rate, instructor name, and honors ("H\n" for honors, "\n" if not"
@@ -53,6 +53,12 @@ Course* createCourse(char* str, char* str2, char* str3, double gpa, double wRate
     newNode -> crsTitle = strdup(str3);
     newNode -> instructor = strdup(str4);
     newNode -> honors = strdup(str5);
+
+    // Check if any strdup failed
+    if (!newNode->crs || !newNode->crsNumber || !newNode->crsTitle || !newNode->instructor || !newNode->honors) {
+        freeCrs(newNode);
+        return NULL;
+    }
     
     newNode -> avgGpa = gpa;
     newNode -> avgWRate = wRate;
@@ -85,9 +91,9 @@ int crscmp(Course* crs1, Course* crs2) {
 CALL THIS ON A COURSE IN THE LIST!!
 */
 void mergeCourses(Course* crs1, Course* crs2) {
+    crs1 -> avgGpa = (crs1 -> avgGpa*  (crs1 -> count) + crs2 -> avgGpa) / (crs1 -> count + 1);
+    crs1 -> avgWRate = (crs1 -> avgWRate*  (crs1 -> count) + crs2 -> avgWRate) / (crs1 -> count + 1);
     crs1 -> count += 1;
-    crs1 -> avgGpa = (crs1 -> avgGpa*  (crs1 -> count - 1) + crs2 -> avgGpa) / (crs1 -> count);
-    crs1 -> avgWRate = (crs1 -> avgWRate*  (crs1 -> count - 1) + crs2 -> avgWRate) / (crs1 -> count);
 
     //crs2 is not part of the linked list, so this is fine
     freeCrs(crs2);
@@ -123,15 +129,17 @@ void addNode(Course** head, Course* node) {
     If the instructor is there, and both are honors, merge the entries. Otherwise, just put it at the end.
     */
         if (crsCmp == 1) {
+            Course* nodeOfInterest;
             while (current != NULL && crscmp(current, node) <= 1) {
                 if (crscmp(current, node) == 0) {
                     mergeCourses(current, node);
                     return;
+                } else if (current -> avgGpa > node -> avgGpa) {
+                    nodeOfInterest = current;
                 }
-                save = current;
                 current = current -> next;
             }
-            insertNode(save, node);
+            insertNode(nodeOfInterest, node);
             return;
         }
         save = current;
@@ -149,7 +157,7 @@ char* checkQuotes(char* line, char* token) {
             char* buff;
             buff = strdup(token);
 
-            while (buff[strlen([buff] - 1)]) {
+            while (buff[strlen([buff] - 1)] != '"') {
                 strcat(buff, ",");
                 token = strtok(NULL, ",");
                 strcat(buff, token);
@@ -159,6 +167,24 @@ char* checkQuotes(char* line, char* token) {
     return token;
 }
 
+/*Create a token seperated by commas from a line. If quotes are included, ignore commas within quotes.
+Return a pointer to the token. firstTime = 1 means it's the first time, anything else means it's not.
+*/
+char* tokenize(char* line, int firstTime) {
+    char* token = line;
+    if (firstTime = 1) {
+        token = strtok(line, ",");
+    } else token = strtok(NULL, ",");
+
+    if (line[0] == '"') {
+        char* buff;
+        buff = strdup(line);
+
+        while (buff[strlen(buff) - 1] != '"') {
+            
+        }
+    }
+}
 /*
 Argument is a line from the CSV and expected number of fields. Extract useful information from the line, 
 assign a Course to that data, and return the pointer to the course. If class is pass-fail, return NULL.
@@ -206,10 +232,21 @@ Course* parseCSV(char* line, int numFields) {
                 honors = strdup(token);
                 break; 
         }
-        char* token = strtok(NULL, ",");
+        token = strtok(NULL, ",");
         i++;
     }
     return createCourse(crs, crsNum, crsTitle, avgGpa, avgWRate, instructor, honors);
+}
+
+/*
+Argument is a line from the CSV. Extract useful information from the line, assign a Course to that data, 
+and return the pointer to the course. If class is pass-fail, return NULL.
+*/
+Course* parseCSVV() {
+    char* tokens[14];
+    int tokenCount = 0;
+
+    char* token = tokenize
 }
 int main() {
 
