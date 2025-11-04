@@ -8,15 +8,9 @@ typedef struct Course{
     char* crs;
     char* crsNumber;
     char* crsTitle;
-    double avgAs;
-    double avgBs;
-    double avgCs;
-    double avgDs;
-    double avgFs;
-    double avgGpa;
-    double avgWRate;
     char* instructor;
     char* honors;
+    double avgAs, avgBs, avgCs, avgDs, avgFs, avgGpa, avgWRate;
     int count;
 
     struct Course* next;
@@ -151,7 +145,7 @@ void addNode(Course** head, Course* node) {
     If the instructor is there, and both are honors, merge the entries. Otherwise, just put it at the end.
     */
         if (crsCmp == 1) {
-            Course* nodeOfInterest;
+            Course* nodeOfInterest = current;
             while (current != NULL && crscmp(current, node) <= 1) {
                 if (crscmp(current, node) == 0) {
                     mergeCourses(current, node);
@@ -177,16 +171,18 @@ Return a pointer to the token. firstTime = 1 means it's the first time, anything
 */
 char* tokenize(char* line, int firstTime) {
     char* token = line;
-    if (firstTime = 1) {
+    static char buff[1024];
+    if (firstTime == 1) {
         token = strtok(line, ",");
     } else token = strtok(NULL, ",");
 
-    if (line[0] == '"') {
-        char* buff;
-        strcat(buff, token);
+    if (token[0] == NULL) return NULL;
 
-        while (buff[strlen(buff) - 1] != '"') {
-            token = strtok(NULL, ",");
+    if (token[0] == '"') {
+        strcpy(buff, token);
+
+        while (buff[strlen(buff) - 1] != '"' && (token = strtok(NULL, ","))) {
+            strcat(buff, ",");
             strcat(buff, token);
         }
 
@@ -208,22 +204,24 @@ Course* parseCSV(char* line) {
 
     for (int i = 1; i < 14; i++) {
         tokens[i] = tokenize(line, 0);
+        
+        if (tokens[i] == NULL) return NULL;
     }
     //Check if class is pass/fail
     if (strcmp(tokens[9], "0%") != 0 || strcmp(tokens[10], "0%") != 0) {
         return NULL;
     }
 
-    double as = atoi(tokens[4]);
-    double bs = atoi(tokens[5]);
-    double cs = atoi(tokens[6]);
-    double ds = atoi(tokens[7]);
-    double fs = atoi(tokens[8]);
-    double wrate = atoi(tokens[11]);
+    double as = atof(tokens[4]);
+    double bs = atof(tokens[5]);
+    double cs = atof(tokens[6]);
+    double ds = atof(tokens[7]);
+    double fs = atof(tokens[8]);
+    double wrate = atof(tokens[11]);
     
-    double gpa = as * 4 + bs * 3 + cs * 2 + ds;
+    double gpa = (as/100.0)*4 + (bs/100.0)*3 + (cs/100.0)*2 + (ds/100.0)*1;
 
-    return createCourse(tokens[0], tokens[2], tokens[3], as, bs, cs, ds, fs, gpa, wrate, tokens[12], tokens[13])
+    return createCourse(tokens[0], tokens[1], tokens[3], as, bs, cs, ds, fs, gpa, wrate, tokens[12], tokens[13]);
 }
 int main() {
 
