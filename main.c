@@ -200,7 +200,7 @@ char* tokenize(char* line, int firstTime) {
 Argument is a line from the CSV. Extract useful information from the line, assign a Course to that data, 
 and return the pointer to the course. If class is pass-fail, return NULL.
 */
-Course* parseCSVV(char* line) {
+Course* parseCSV(char* line) {
     char* tokens[14];
     int tokenCount = 0;
 
