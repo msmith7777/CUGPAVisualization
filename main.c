@@ -8,6 +8,11 @@ typedef struct Course{
     char* crs;
     char* crsNumber;
     char* crsTitle;
+    double avgAs;
+    double avgBs;
+    double avgCs;
+    double avgDs;
+    double avgFs;
     double avgGpa;
     double avgWRate;
     char* instructor;
@@ -38,10 +43,10 @@ void freeList(Course* head) {
 }
 
 /*
-Create a struct. Arguements, in order, are course, course number, course title, total gpa, 
-total withdraw rate, instructor name, and honors ("H\n" for honors, "\n" if not"
+Create a struct. Arguements, in order, are course, course number, course title, percenteges of
+each letter grad, total gpa, total withdraw rate, instructor name, and honors ("H\n" for honors, "\n" if not"
 */
-Course* createCourse(char* str, char* str2, char* str3, double gpa, double wRate, char* str4, char* str5) {
+Course* createCourse(char* str, char* str2, char* str3, double AS, double BS, double CS, double DS, double FS, double gpa, double wRate, char* str4, char* str5) {
     Course* newNode = calloc(1, sizeof(Course));
     if (newNode == NULL) {
         printf("Malloc failed.\n");
@@ -60,6 +65,11 @@ Course* createCourse(char* str, char* str2, char* str3, double gpa, double wRate
         return NULL;
     }
     
+    newNode -> avgAs = AS;
+    newNode -> avgBs = BS;
+    newNode -> avgCs = CS;
+    newNode -> avgDs = DS;
+    newNode -> avgFs = FS;
     newNode -> avgGpa = gpa;
     newNode -> avgWRate = wRate;
     newNode -> count = 1;
@@ -87,12 +97,24 @@ int crscmp(Course* crs1, Course* crs2) {
     return 2;
 }
 
-/*Merge 2 entries of a Course struct by averaging values. The 2nd course is the new one. !!DO NOT
+//Average a series by adding a new value to a previously calculated average.
+double runningAverage(double avg, double newVal, int count) {
+    return (avg * count + newVal) / (count + 1);
+}
+
+/*
+Merge 2 entries of a Course struct by averaging values. The 2nd course is the new one. !!DO NOT
 CALL THIS ON A COURSE IN THE LIST!!
 */
 void mergeCourses(Course* crs1, Course* crs2) {
-    crs1 -> avgGpa = (crs1 -> avgGpa*  (crs1 -> count) + crs2 -> avgGpa) / (crs1 -> count + 1);
-    crs1 -> avgWRate = (crs1 -> avgWRate*  (crs1 -> count) + crs2 -> avgWRate) / (crs1 -> count + 1);
+    crs1 -> avgAs = runningAverage(crs1 -> avgAs, crs2 -> avgAs, crs1 -> count);
+    crs1 -> avgBs = runningAverage(crs1 -> avgBs, crs2 -> avgBs, crs1 -> count);
+    crs1 -> avgCs = runningAverage(crs1 -> avgCs, crs2 -> avgCs, crs1 -> count);
+    crs1 -> avgDs = runningAverage(crs1 -> avgDs, crs2 -> avgDs, crs1 -> count);
+    crs1 -> avgFs = runningAverage(crs1 -> avgFs, crs2 -> avgFs, crs1 -> count);
+    crs1 -> avgGpa = runningAverage(crs1 -> avgGpa, crs2 -> avgGpa, crs1 -> count);
+    crs1 -> avgWRate = runningAverage(crs1 -> avgWRate, crs2 -> avgWRate, crs1 -> count);
+
     crs1 -> count += 1;
 
     //crs2 is not part of the linked list, so this is fine
@@ -149,25 +171,8 @@ void addNode(Course** head, Course* node) {
     node -> next = NULL;
 }
 
-/*Arguements are a line of CSV and token. Checks if token starts with quotes, and, if it does, 
-returns ptr to the full field, ignoring commas between. TODO: fix.
-*/
-char* checkQuotes(char* line, char* token) {
-    if (token[0] == '"') {
-            char* buff;
-            buff = strdup(token);
-
-            while (buff[strlen([buff] - 1)] != '"') {
-                strcat(buff, ",");
-                token = strtok(NULL, ",");
-                strcat(buff, token);
-            }
-            return buff;
-    }
-    return token;
-}
-
-/*Create a token seperated by commas from a line. If quotes are included, ignore commas within quotes.
+/*
+Create a token seperated by commas from a line. If quotes are included, ignore commas within quotes.
 Return a pointer to the token. firstTime = 1 means it's the first time, anything else means it's not.
 */
 char* tokenize(char* line, int firstTime) {
@@ -178,75 +183,47 @@ char* tokenize(char* line, int firstTime) {
 
     if (line[0] == '"') {
         char* buff;
-        buff = strdup(line);
+        strcat(buff, token);
 
         while (buff[strlen(buff) - 1] != '"') {
-            
+            token = strtok(NULL, ",");
+            strcat(buff, token);
         }
-    }
-}
-/*
-Argument is a line from the CSV and expected number of fields. Extract useful information from the line, 
-assign a Course to that data, and return the pointer to the course. If class is pass-fail, return NULL.
-*/
-Course* parseCSV(char* line, int numFields) {
-    char* crs;
-    char* crsNum;
-    char* crsTitle;
-    double avgGpa = 0;
-    double avgWRate = 0;
-    char* instructor;
-    char* honors;
 
-    int i = 0;
-    char* token = strtok(line, ",");
-
-    while (token && i < numFields) {
-        switch (i) {
-            case 0:
-                crs = strdup(token);
-                break;
-            case 1:
-                crsNum = strdup(token);
-                strtok(NULL, ",");
-                break;
-            case 2:
-                crsTitle = strdup(token);
-                break;
-            case 3:
-                for (int j = i; j <= 7; j++) {
-                    avgGpa += atoi(token) / (7 - j);
-                    strtok(NULL, ",");
-                }
-                if (atoi(strtok(NULL, ",")) != 0 || atoi(strtok(NULL, ",")) != 0 ) {
-                    return NULL;
-                }
-                break;
-            case 4:
-                avgWRate = atoi(token);
-                break;
-            case 5:
-                instructor = checkQuotes(line, token);
-                break;
-            case 6:
-                honors = strdup(token);
-                break; 
-        }
-        token = strtok(NULL, ",");
-        i++;
+        return buff;
     }
-    return createCourse(crs, crsNum, crsTitle, avgGpa, avgWRate, instructor, honors);
+
+    return token;
 }
 
 /*
 Argument is a line from the CSV. Extract useful information from the line, assign a Course to that data, 
 and return the pointer to the course. If class is pass-fail, return NULL.
 */
-Course* parseCSVV() {
+Course* parseCSVV(char* line) {
     char* tokens[14];
     int tokenCount = 0;
 
-    char* token = tokenize
+    tokens[0] = tokenize(line, 1);
+
+    for (int i = 1; i < 14; i++) {
+        tokens[i] = tokenize(line, 0);
+    }
+    //Check if class is pass/fail
+    if (strcmp(tokens[9], "0%") != 0 || strcmp(tokens[10], "0%") != 0) {
+        return NULL;
+    }
+
+    double as = atoi(tokens[4]);
+    double bs = atoi(tokens[5]);
+    double cs = atoi(tokens[6]);
+    double ds = atoi(tokens[7]);
+    double fs = atoi(tokens[8]);
+    double wrate = atoi(tokens[11]);
+    
+    double gpa = as * 4 + bs * 3 + cs * 2 + ds;
+
+    return createCourse(tokens[0], tokens[2], tokens[3], as, bs, cs, ds, fs, gpa, wrate, tokens[12], tokens[13])
 }
 int main() {
 
