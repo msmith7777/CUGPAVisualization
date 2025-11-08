@@ -134,6 +134,7 @@ void addNode(Course** head, Course* node) {
     //Iterate through the linked list
     while (current != NULL) {
         int crsCmp = crscmp(current, node);
+
     //If the course has the same name AND instructor AND is honors as one in the list, merge the entries
         if (crsCmp == 0) {
             mergeCourses(current, node);
@@ -145,17 +146,18 @@ void addNode(Course** head, Course* node) {
     If the instructor is there, and both are honors, merge the entries. Otherwise, just put it at the end.
     */
         if (crsCmp == 1) {
-            Course* nodeOfInterest = current;
+            Course* insertAfter = save;
+
             while (current != NULL && crscmp(current, node) <= 1) {
                 if (crscmp(current, node) == 0) {
                     mergeCourses(current, node);
                     return;
                 } else if (current -> avgGpa > node -> avgGpa) {
-                    nodeOfInterest = current;
+                    insertAfter = current;
                 }
                 current = current -> next;
             }
-            insertNode(nodeOfInterest, node);
+            insertNode(insertAfter, node);
             return;
         }
         save = current;
@@ -171,44 +173,80 @@ Return a pointer to the token. firstTime = 1 means it's the first time, anything
 */
 char* tokenize(char* line, int firstTime) {
     char* token = line;
-    static char buff[1024];
+    char buff[1024];
     if (firstTime == 1) {
         token = strtok(line, ",");
     } else token = strtok(NULL, ",");
 
-    if (token[0] == NULL) return NULL;
+    if (token == NULL) return NULL;
 
     if (token[0] == '"') {
-        strcpy(buff, token);
-
-        while (buff[strlen(buff) - 1] != '"' && (token = strtok(NULL, ","))) {
-            strcat(buff, ",");
-            strcat(buff, token);
-        }
-
-        return buff;
+    //Skip opening quote
+    strcpy(buff, token + 1);
+    
+    while (buff[strlen(buff) - 1] != '"' && (token = strtok(NULL, ","))) {
+        strcat(buff, ",");
+        strcat(buff, token);
     }
+    
+    // Remove closing quote if present
+    if (buff[strlen(buff) - 1] == '"') {
+        buff[strlen(buff) - 1] = '\0';
+    }
+    
+    char* result = malloc(strlen(buff) + 1);
+    strcpy(result, buff);
+    return result;
+}
 
-    return token;
+    return strdup(token);
 }
 
 /*
 Argument is a line from the CSV. Extract useful information from the line, assign a Course to that data, 
 and return the pointer to the course. If class is pass-fail, return NULL.
 */
-Course* parseCSV(char* line) {
+Course* parseLine(char* line) {
     char* tokens[14];
-    int tokenCount = 0;
 
     tokens[0] = tokenize(line, 1);
+
+    if (tokens[0] == NULL) return NULL;
+
+    // Skip header line
+    if (strcmp(tokens[0], "Course") == 0) {
+        free(tokens[0]);
+        return NULL;
+    }
 
     for (int i = 1; i < 14; i++) {
         tokens[i] = tokenize(line, 0);
         
-        if (tokens[i] == NULL) return NULL;
+        if (tokens[i] == NULL) {
+            // If it's the honors field (last field), use empty string
+            if (i == 13) {
+                tokens[i] = strdup("");
+                break;
+            }
+            // Otherwise it's a malformed line
+            for (int j = 0; j < i; j++) {
+                free(tokens[j]);
+            }        
+            return NULL;
+        }
     }
-    //Check if class is pass/fail
+    //Remove newlines from tokens.
+    for (int i = 0; i < 14; i++) {
+    size_t len = strlen(tokens[i]);
+    if (len > 0 && tokens[i][len - 1] == '\n') {
+        tokens[i][len - 1] = '\0';
+    }
+    }
+    //Classes are not pass/fail if they are entered as 0% in the CSV. If they are, they should be skipped
     if (strcmp(tokens[9], "0%") != 0 || strcmp(tokens[10], "0%") != 0) {
+        for (int i = 0; i < 14; i++) {
+                free(tokens[i]);
+            }     
         return NULL;
     }
 
@@ -221,9 +259,88 @@ Course* parseCSV(char* line) {
     
     double gpa = (as/100.0)*4 + (bs/100.0)*3 + (cs/100.0)*2 + (ds/100.0)*1;
 
-    return createCourse(tokens[0], tokens[1], tokens[3], as, bs, cs, ds, fs, gpa, wrate, tokens[12], tokens[13]);
-}
-int main() {
+    Course* result = createCourse(tokens[0], tokens[1], tokens[3], as, bs, cs, ds, fs, gpa, wrate, tokens[12], tokens[13]);
 
+    for (int i = 0; i < 14; i++) {
+                free(tokens[i]);
+            }
+            
+    return result;
+}
+
+//Creates a linked list from the CSV already opened in r mode. Returns a pointer to the head
+Course* createLL(FILE* file) {
+    char buff[1024];
+    Course* head = NULL;
+
+    //Skip header line
+    fgets(buff, 1024, file);
+
+    Course* current;
+
+    while(fgets(buff, 1024, file) != NULL) {
+        current = parseLine(buff);
+        if (current == NULL) continue;
+        addNode(&head, current);
+    }
+
+    return head;
+}
+
+//Print the linked list to an already opened file in w mode and properly free the data.
+void printLL(Course* head, FILE* file) {
+fprintf(file, "[\n");
+
+    Course* current = head;
+    while (current != NULL) {
+        fprintf(file, "  {\n");
+        fprintf(file, "    \"course\": \"%s\",\n", current -> crs);
+        fprintf(file, "    \"courseNumber\": \"%s\",\n", current -> crsNumber);
+        fprintf(file, "    \"title\": \"%s\",\n", current -> crsTitle);
+        fprintf(file, "    \"instructor\": \"%s\",\n", current -> instructor);
+        fprintf(file, "    \"honors\": %s,\n", (strcmp(current->honors, "H") == 0) ? "true" : "false");
+        fprintf(file, "    \"avgAs\": %.2f,\n", current -> avgAs);
+        fprintf(file, "    \"avgBs\": %.2f,\n", current -> avgBs);
+        fprintf(file, "    \"avgCs\": %.2f,\n", current -> avgCs);
+        fprintf(file, "    \"avgDs\": %.2f,\n", current -> avgDs);
+        fprintf(file, "    \"avgFs\": %.2f,\n", current -> avgFs);
+        fprintf(file, "    \"avgGpa\": %.2f,\n", current -> avgGpa);
+        fprintf(file, "    \"avgWRate\": %.2f,\n", current -> avgWRate);
+        fprintf(file, "    \"numSections\": %d\n", current -> count);
+        fprintf(file, "  }");
+
+        if (current->next != NULL)
+            fprintf(file, ",");
+        fprintf(file, "\n");
+
+        current = current->next;
+    }
+
+    fprintf(file, "]\n");
+}
+
+int main() {
+    FILE* inputFile = fopen("grades.csv", "r");
+    if (inputFile == NULL) {
+        printf("Error: Could not open grades.csv\n");
+        return 1;
+    }
+
+    Course* head = createLL(inputFile);
+    fclose(inputFile);
+
+    FILE* outputFile = fopen("output.json", "w");
+    if (outputFile == NULL) {
+        printf("Error: Could not open output.json\n");
+        freeList(head);
+        return 1;
+    }
+
+    printLL(head, outputFile);
+    fclose(outputFile);
+
+    freeList(head);
+
+    printf("Done! Check output.json\n");
     return 0;
 }
