@@ -73,14 +73,61 @@ Course* createCourse(char* str, char* str2, char* str3, double AS, double BS, do
     return newNode;
 }
 
+/* 
+Normalize a string: remove punctuation, lowercase, compress spaces.
+Returns a newly allocated string. Caller must free it.
+*/
+char* normalize(const char *s) {
+    int len = strlen(s);
+    char *buf = malloc(len + 1);  // max possible length
+    if (!buf) return NULL;
+
+    char *d = buf;
+    int lastWasSpace = 0;
+
+    for (const char *c = s; *c; c++) {
+        if (*c == '.' || *c == ',') {
+            continue; // skip punctuation
+        } else if (isspace((unsigned char)*c)) {
+            if (!lastWasSpace) { // compress multiple spaces to one
+                *d++ = ' ';
+                lastWasSpace = 1;
+            }
+        } else {
+            *d++ = tolower((unsigned char)*c);
+            lastWasSpace = 0;
+        }
+    }
+}
+
+//Compares 2 names, truncated to the smallest. Return 1 if match, 0 if not.
+int truncatedCmp(const char* a, const char* b) {
+    char* na = normalize(a);
+    char* nb = normalize(b);
+
+    int lenA = strlen(na);
+    int lenB = strlen(nb);
+    int minLen = lenA < lenB ? lenA : lenB;
+
+    na[minLen] = '\0';
+    nb[minLen] = '\0';
+
+    int res = strcmp(na, nb) == 0;
+
+    free(na);
+    free(nb);
+    return res;
+}
+
 /*
 Compare data in 2 Course structs. If course AND instructor name AND honors is the same, return 0. 
 If just course name is the same, return 1. If neither, return 2.
 */
 int crscmp(Course* crs1, Course* crs2) {
+
     int numCmp = strcmp(crs1 -> crs, crs2 -> crs);
     int crsNumberCmp = strcmp(crs1 -> crsNumber, crs2 -> crsNumber);
-    int instrCmp = strcmp(crs1 -> instructor, crs2 -> instructor);
+    int instrCmp = truncatedcmp(crs1 -> instructor, crs2 -> instructor);
     int hnrsCmp = strcmp(crs1 -> honors, crs2 -> honors);
 
     if (numCmp == 0 && crsNumberCmp == 0 && instrCmp == 0 && hnrsCmp == 0){

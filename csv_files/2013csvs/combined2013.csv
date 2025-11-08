@@ -792,7 +792,7 @@ CPSC,4040,1,Cmptr Graphics Image,,56%,25%,13%,6%,0%,0%,0%,0%,"Levine, Joshua A",
 CPSC,4200,1,Computer Security Principles,,33%,19%,24%,10%,5%,0%,0%,10%,"Srimani, Pradip K.",
 CPSC,4620,1,Database Management Systems,,66%,22%,9%,0%,0%,0%,0%,3%,"Gilbert, Juan E",
 CPSC,4810,6,Sel Topic Games for Sci Ed CI,,80%,20%,0%,0%,0%,0%,0%,0%,"Levine, Joshua A",
-CPSC,4910,1,Prof,Issues II,83%,11%,3%,3%,0%,0%,0%,0%,"Jones, James H.",
+CPSC,4910,1,Prof Issues II,83%,11%,3%,3%,0%,0%,0%,0%,"Jones, James H.",
 CPSC,6040,1,Cptr Graphics Image,,74%,21%,0%,0%,0%,0%,0%,5%,"Levine, Joshua A",
 CPSC,6060,1,Gpu Computation,,50%,30%,10%,0%,0%,0%,0%,10%,"Geist, Robert M",
 CPSC,6120,1,Eye Tracking Methodology,,43%,57%,0%,0%,0%,0%,0%,0%,"Duchowski, Andrew T",
@@ -1531,7 +1531,7 @@ students.,"In addition, if a section has all but 1 student making a common grade
 Grades Report for 201308,,,,,,,,,,,,,,
 Course,Numbe,Section,Course Title,,A,B,C,D,F,P,F(P),W,Instructor,Honor
 FNR,2040,1,Soil Information Systems,,72%,23%,3%,0%,0%,0%,0%,1%,"Mikhailova, Elena",
-FNR,4700,4,Techniques &,Bat Conservation,38%,63%,0%,0%,0%,0%,0%,0%,"Davis, James R",
+FNR,4700,4,Techniques & Bat Conservation,38%,63%,0%,0%,0%,0%,0%,0%,"Davis, James R",
 FNR,4990,1,Natural Resources Seminar,,53%,11%,5%,5%,21%,0%,0%,5%,"Hagan, Donald L",
 FOR,2050,1,Dendrology,,37%,33%,14%,7%,7%,0%,0%,2%,"Hagan, Donald L",
 FOR,2050,2,Dendrology,,31%,23%,29%,3%,9%,0%,0%,6%,"Hagan, Donald L",
@@ -4099,7 +4099,7 @@ CPSC,4110,1,Virtual Reality Syst,,33%,33%,33%,0%,0%,0%,0%,0%,"Babu, Sabarish Ven
 CPSC,4200,1,Computer Security Pr,,32%,36%,18%,5%,5%,0%,0%,5%,"Srimani, Pradip K.",
 CPSC,4620,1,Database Management,,29%,50%,18%,0%,0%,0%,0%,4%,"Luo, Feng",
 CPSC,4810,16,Programming Team,,89%,11%,0%,0%,0%,0%,0%,0%,"Dean, Brian Christop",
-CPSC,4910,1,Prof,Issues II,95%,4%,0%,0%,0%,0%,0%,2%,"Jones, James H.",
+CPSC,4910,1,Prof Issues II,95%,4%,0%,0%,0%,0%,0%,2%,"Jones, James H.",
 Course Sections that meet the following conditions are not included: Undergraduate classes with less than 10 students or Graduate classes with less than 5,,,,,,,,,,,,,,
 students.,"In addition, if a section has all but 1 student making a common grade (example: All but one student makes a ""B"" in a class), the section is excluded.",,,,,,,,,,,,,
 "Monday, September 23, 2019",,,,,,,,,,,,,Page 34 of 122,
@@ -4885,23 +4885,23 @@ students.,"In addition, if a section has all but 1 student making a common grade
 "Monday, September 23, 2019",,,,,,,,,,,,Page 60 of 122,
 Grades Report for 201408,,,,,,,,,,,,,,
 Course,Numbe,Section,,Course Title,A,B,C,D,F,P,F(P),W,Instructor,Honor
-ENGR,1080,56,Program/Prob Solving,,4%,43%,13%,13%,26%,0%,0%,0%,"Park, William J",
-ENGR,1080,56,Program/Prob Solving,,4%,43%,13%,13%,26%,0%,0%,0%,"Ewing, David J",
-ENGR,1080,72,Program/Prob Solving,,13%,88%,0%,0%,0%,0%,0%,0%,"Ewing, David J",H
-ENGR,1080,72,Program/Prob Solving,,13%,88%,0%,0%,0%,0%,0%,0%,"Minor, John C",H
+ENGR,1080,56,Program/Prob Solving,4%,43%,13%,13%,26%,0%,0%,0%,"Park, William J",
+ENGR,1080,56,Program/Prob Solving,4%,43%,13%,13%,26%,0%,0%,0%,"Ewing, David J",
+ENGR,1080,72,Program/Prob Solving,13%,88%,0%,0%,0%,0%,0%,0%,"Ewing, David J",H
+ENGR,1080,72,Program/Prob Solving,13%,88%,0%,0%,0%,0%,0%,0%,"Minor, John C",H
 ENGR,1090,20,Prog/Problem Solving,,28%,48%,20%,3%,0%,0%,0%,3%,"Ewing, David J",
 ENGR,1090,20,Prog/Problem Solving,,28%,48%,20%,3%,0%,0%,0%,3%,"Minor, John C",
 ENGR,1090,24,Prog/Problem Solving,,36%,43%,19%,2%,0%,0%,0%,0%,"Ewing, David J",
 ENGR,1090,24,Prog/Problem Solving,,36%,43%,19%,2%,0%,0%,0%,0%,"Minor, John C",
 ENGR,1090,28,Prog/Problem Solving,,43%,33%,17%,7%,0%,0%,0%,0%,"Ewing, David J",
-ENGR,1090,56,Prog/Problem Solv Ap,,14%,86%,0%,0%,0%,0%,0%,0%,"Minor, John C",H
-ENGR,1090,56,Prog/Problem Solv Ap,,14%,86%,0%,0%,0%,0%,0%,0%,"Ewing, David J",H
+ENGR,1090,56,Prog/Problem Solv Ap,14%,86%,0%,0%,0%,0%,0%,0%,"Minor, John C",H
+ENGR,1090,56,Prog/Problem Solv Ap,14%,86%,0%,0%,0%,0%,0%,0%,"Ewing, David J",H
 ENGR,1900,13,CI in ENGR Architect,,43%,57%,0%,0%,0%,0%,0%,0%,"Norfolk, Christopher",
 ENGR,1900,13,CI in ENGR Architect,,43%,57%,0%,0%,0%,0%,0%,0%,"Maier, Jonathan R",
 ENGR,1900,14,CI in ENGR Public Po,,70%,20%,0%,0%,0%,0%,0%,10%,"Maier, Jonathan R",
 ENGR,1900,14,CI in ENGR Public Po,,70%,20%,0%,0%,0%,0%,0%,10%,"Norfolk, Christopher",
-ENGR,1900,17,CI,in ENGR What ENG,83%,0%,0%,0%,0%,0%,0%,17%,"Putman, Bradley J",
-ENGR,1900,17,CI,in ENGR What ENG,83%,0%,0%,0%,0%,0%,0%,17%,"Maier, Jonathan R",
+ENGR,1900,17,CI in ENGR What ENG,83%,0%,0%,0%,0%,0%,0%,17%,"Putman, Bradley J",
+ENGR,1900,17,CI in ENGR What ENG,83%,0%,0%,0%,0%,0%,0%,17%,"Maier, Jonathan R",
 ENGR,1900,77,CI in ENGR Huan Powe,,69%,0%,0%,0%,0%,0%,0%,31%,"Maier, Jonathan R",
 ENGR,1900,77,CI in ENGR Huan Powe,,69%,0%,0%,0%,0%,0%,0%,31%,"Mocko, Gregory",
 ENGR,2080,23,Engr Graphics & Mach,,43%,20%,20%,4%,6%,0%,0%,7%,"Minor, John C",
@@ -10163,7 +10163,7 @@ CHE,4070,1,Unit Op Lab II,,22%,64%,15%,0%,0%,0%,0%,0%,"Norfolk, Christopher",
 CHE,4310,1,Process Design I,,48%,38%,14%,0%,0%,0%,0%,0%,"Bruce, David A",
 CHE,4450,1,Green Engineering,,69%,19%,6%,0%,0%,0%,0%,6%,"Kitchens, Christophe",
 CHE,4500,1,Chem Reaction Engr,,25%,32%,32%,10%,0%,0%,0%,0%,"Blenner, Mark Alan",
-CHE,4990,14,CI-,Membrane Separations,83%,17%,0%,0%,0%,0%,0%,0%,"Husson, Scott M",
+CHE,4990,14,CI- Membrane Separations,83%,17%,0%,0%,0%,0%,0%,0%,"Husson, Scott M",
 CHE,8030,1,Advanced Transport,,45%,45%,9%,0%,0%,0%,0%,0%,"Hirt, Douglas E",
 CHE,8040,1,Ch E Thermodynamics,,42%,50%,8%,0%,0%,0%,0%,0%,"Sarupria, Sapna",
 CHE,8050,1,Ch E Kinetics,,50%,50%,0%,0%,0%,0%,0%,0%,"Roberts, Mark E",
@@ -13052,9 +13052,9 @@ BIOL,1060,40,Gen Biology Lab II,,30%,25%,20%,5%,10%,0%,0%,10%,"Kaisa, Tafadzwa R
 BIOL,1060,41,Gen Biology Lab II,,37%,5%,21%,5%,32%,0%,0%,0%,"Kaisa, Tafadzwa R",
 BIOL,1060,42,Gen Biology Lab II,,30%,25%,15%,20%,10%,0%,0%,0%,"Kaisa, Tafadzwa R",
 BIOL,1090,1,Intro to Life Sci,,67%,19%,14%,0%,0%,0%,0%,0%,"Hardwick, Renea Chri",
-BIOL,1110,1,Prin of Biol II,,26%,51%,12%,8%,1%,0%,0%,2%,"Kosinski, Robert J",
-BIOL,1110,2,Prin of Biol II,,43%,35%,18%,0%,3%,0%,0%,1%,"Dittrich-Reed, Dylan",
-BIOL,1110,4,Prin of Biol II,(HON),86%,14%,0%,0%,0%,0%,0%,0%,"Dittrich-Reed, Dylan",H
+BIOL,1110,1,Prin of Biol II,26%,51%,12%,8%,1%,0%,0%,2%,"Kosinski, Robert J",
+BIOL,1110,2,Prin of Biol II,43%,35%,18%,0%,3%,0%,0%,1%,"Dittrich-Reed, Dylan",
+BIOL,1110,4,Prin of Biol II (HON),86%,14%,0%,0%,0%,0%,0%,0%,"Dittrich-Reed, Dylan",H
 BIOL,1200,4,Biological Inq Lab,,61%,33%,6%,0%,0%,0%,0%,0%,"Minor, V Christine M",
 BIOL,1200,5,Biological Inq Lab,,67%,17%,0%,11%,6%,0%,0%,0%,"Minor, V Christine M",
 BIOL,1200,6,Biological Inq Lab,,60%,30%,10%,0%,0%,0%,0%,0%,"Minor, V Christine M",
@@ -25508,7 +25508,7 @@ BIOL,1060,35,Gen Biology Lab II,,5%,48%,33%,5%,10%,0%,0%,0%,"Kaisa, Tafadzwa R",
 BIOL,1060,36,Gen Biology Lab II,,0%,19%,63%,6%,0%,0%,0%,13%,"Kaisa, Tafadzwa R",
 BIOL,1110,1,Principles of Biology II,,24%,48%,19%,3%,5%,0%,0%,1%,"Dittrich-Reed, Dylan",
 BIOL,1110,3,Principles of Biology II,,40%,37%,14%,3%,3%,0%,0%,2%,"Kosinski, Robert J",
-BIOL,1110,4,Prin of Biol II,(HON),94%,6%,0%,0%,0%,0%,0%,0%,"Kosinski, Robert J",H
+BIOL,1110,4,Prin of Biol II (HON),94%,6%,0%,0%,0%,0%,0%,0%,"Kosinski, Robert J",H
 BIOL,1200,1,Biological Inq Lab,,24%,71%,6%,0%,0%,0%,0%,0%,"Minor, V Christine M",
 BIOL,1200,2,Biological Inq Lab,,39%,28%,33%,0%,0%,0%,0%,0%,"Minor, V Christine M",
 BIOL,1200,3,Biological Inq Lab,,60%,27%,7%,0%,0%,0%,0%,7%,"Minor, V Christine M",
@@ -25600,14 +25600,14 @@ BUS,1010,9,Business Foundations,,25%,44%,19%,0%,13%,0%,0%,0%,"Tumblin, William E
 BUS,1010,10,Business Foundations,,16%,48%,20%,8%,8%,0%,0%,0%,"Tumblin, William Ern",
 BUS,1010,16,Business Foundations,,14%,41%,10%,17%,0%,0%,0%,17%,"Mullinax, James D",
 BUS,1010,17,Business Foundations,,24%,34%,34%,7%,0%,0%,0%,0%,"Mullinax, James D",
-BUS,2990,3,CI:,Being a Leader,75%,19%,0%,6%,0%,0%,0%,0%,"Mann, Christopher R",
+BUS,2990,3,CI: Being a Leader,75%,19%,0%,6%,0%,0%,0%,0%,"Mann, Christopher R",
 CE,2010,1,Statics,,59%,24%,9%,2%,3%,0%,0%,3%,"Khoshnevisan, Sara",
 CE,2010,2,Statics,,12%,31%,40%,0%,10%,0%,0%,7%,"Sternhagen, Melissa",
 CE,2010,3,Statics,,63%,23%,8%,3%,0%,0%,0%,3%,"Ross, Brandon E",
 CE,2010,4,Statics,,12%,24%,12%,20%,28%,0%,0%,4%,"Sternhagen, Melissa",
 CE,2010,5,Statics,,36%,36%,18%,6%,3%,0%,0%,0%,"Ashman, William Albe",
 CE,2010,6,Statics,,50%,22%,22%,4%,2%,0%,0%,0%,"Nilsson, R Kent",
-CE,2010,7,Statics (HON),,82%,9%,0%,9%,0%,0%,0%,0%,"Ross, Brandon E",H
+CE,2010,7,Statics (HON),82%,9%,0%,9%,0%,0%,0%,0%,"Ross, Brandon E",H
 CE,2060,1,Structural Mechanics,,31%,51%,18%,0%,0%,0%,0%,0%,"Nielson, Bryant G",
 CE,2060,2,Structural Mechanics,,54%,38%,6%,0%,2%,0%,0%,0%,"Soltani, Mahmoodreza",
 CE,2080,1,Dynamics,,17%,30%,42%,7%,2%,0%,0%,3%,"Sternhagen, Melissa",
@@ -30777,7 +30777,7 @@ PKSC,4540,2,Prod Pkg Evl Lab,,25%,56%,6%,0%,6%,0%,0%,6%,Batt Gregory S,
 PKSC,4540,3,Prod Pkg Evl Lab,,44%,38%,19%,0%,0%,0%,0%,0%,Batt Gregory S,
 PKSC,4540,4,Prod Pkg Evl Lab,,56%,25%,6%,13%,0%,0%,0%,0%,Batt Gregory S,
 PKSC,4640,1,Food & Health Care Pkg Systems,,60%,30%,9%,0%,0%,0%,0%,0%,Cooksey Kay D,
-PKSC,4990,7,CI-Packaging,Sci Seminar,80%,0%,0%,0%,0%,0%,0%,20%,Hurley Rupert A,
+PKSC,4990,7,CI-Packaging Sci Seminar,80%,0%,0%,0%,0%,0%,0%,20%,Hurley Rupert A,
 PLPA,3100,1,Principles of Plant Pathology,,14%,46%,39%,0%,0%,0%,0%,0%,Jeffers Steven Nye,
 PLPA,4250,1,Introductory Mycology,,33%,25%,8%,25%,8%,0%,0%,0%,Kerrigan Julia Louis,
 POSC,1010,1,Amer National Govt,,21%,44%,25%,7%,0%,0%,0%,4%,Stewart Joseph Earl,
@@ -31581,7 +31581,7 @@ BIOL,1060,35,Gen Biology Lab II,,38%,31%,25%,6%,0%,0%,0%,0%,Kaisa Tafadzwa R,
 BIOL,1060,36,Gen Biology Lab II,,40%,20%,20%,20%,0%,0%,0%,0%,Kaisa Tafadzwa R,
 BIOL,1110,1,Principles of Biology II,,21%,43%,16%,8%,5%,0%,0%,7%,Dittrich-Reed Dylan,
 BIOL,1110,3,Principles of Biology II,,36%,47%,11%,2%,1%,0%,0%,2%,Kosinski Robert J,
-BIOL,1110,4,Prin of Biol II,(HON),95%,5%,0%,0%,0%,0%,0%,0%,Kosinski Robert J,H
+BIOL,1110,4,Prin of Biol II (HON),95%,5%,0%,0%,0%,0%,0%,0%,Kosinski Robert J,H
 BIOL,1200,1,Biological Inq Lab,,25%,45%,15%,5%,0%,0%,0%,10%,Minor V Christine M,
 BIOL,1200,2,Biological Inq Lab,,30%,45%,15%,10%,0%,0%,0%,0%,Minor V Christine M,
 BIOL,1200,3,Biological Inq Lab,,37%,37%,16%,5%,0%,0%,0%,5%,Minor V Christine M,
@@ -35364,7 +35364,7 @@ ECON,4980,1,Selected Topics in Economics,,83%,17%,0%,0%,0%,0%,0%,0%,"Bodenhorn, 
 ECON,4980,3,History of Economic Thought,,50%,50%,0%,0%,0%,0%,0%,0%,"Hobbs, Bradley Keith",
 ECON,4980,3,History of Economic Thought,,50%,50%,0%,0%,0%,0%,0%,0%,"Hobbs, Bradley Keith",
 ECON,4980,4,Sel Topic - Why Business?,,34%,52%,14%,0%,0%,0%,0%,0%,"Watson, Lawrence Reed",
-ECON,4980,5,Cryptocurrency and,Blockchain,37%,42%,16%,0%,0%,0%,0%,5%,"Dwyer, Gerald P",
+ECON,4980,5,Cryptocurrency and Blockchain,37%,42%,16%,0%,0%,0%,0%,5%,"Dwyer, Gerald P",
 ECON,4980,6,Sel Topic - Why Business?,,33%,58%,8%,0%,0%,0%,0%,0%,"Hobbs, Bradley Keith",
 ECON,4980,6,Sel Topic - Why Business?,,33%,58%,8%,0%,0%,0%,0%,0%,"Hobbs, Bradley Keith",
 ECON,6050,5,Intro to Econometric,,36%,27%,36%,0%,0%,0%,0%,0%,"Barkowski, Scott J",
@@ -38199,9 +38199,9 @@ students.,"In addition, if a section has all but 1 student making a common grade
 "Monday, September 23, 2019",,,,,,,,,,,,Page 16 of 119,
 Grades Report for 201901,,,,,,,,,,,,,,
 Course,Numbe,Section,Course Title,,A,B,C,D,F,P,F(P),W,Instructor,Honor
-BIOL,1110,2,Principles of Biology II (HON),,90%,10%,0%,0%,0%,0%,0%,0%,"Hardwick, Renea Chri",H
+BIOL,1110,2,Principles of Biology II (HON),90%,10%,0%,0%,0%,0%,0%,0%,"Hardwick, Renea Chri",H
 BIOL,1110,3,Principles of Biology II,,34%,43%,14%,4%,5%,0%,0%,2%,"Minor, V Christine M",
-BIOL,1110,4,Prin of Biol II,(HON),90%,10%,0%,0%,0%,0%,0%,0%,"Minor, V Christine M",H
+BIOL,1110,4,Prin of Biol II (HON),90%,10%,0%,0%,0%,0%,0%,0%,"Minor, V Christine M",H
 BIOL,2000,1,Biology in the News,,95%,0%,0%,0%,0%,0%,0%,5%,"McNutt-Scott, Tamara",
 BIOL,2040,1,"Environ, Energy and Society",,60%,33%,4%,2%,0%,0%,0%,0%,"Hains, John Jenkins",
 BIOL,2040,2,"Environ, Energy and Society",,33%,41%,17%,7%,0%,0%,0%,1%,"Hains, John Jenkins",
@@ -38215,7 +38215,7 @@ BIOL,3080,1,Biology of Plants Practicum,,45%,25%,10%,15%,5%,0%,0%,0%,"Redding, N
 BIOL,3080,2,Biology of Plants Practicum,,50%,20%,20%,0%,10%,0%,0%,0%,"Redding, Nathan W",
 BIOL,3160,1,Human Physiology,,33%,43%,19%,3%,1%,0%,0%,1%,"McNutt-Scott, Tamara",
 BIOL,3350,1,Evolutionary Biology,,43%,38%,15%,2%,1%,0%,0%,1%,"Ptacek, Margaret",
-BIOL,3350,2,Evolutionary Biology (HON),,86%,14%,0%,0%,0%,0%,0%,0%,"Ptacek, Margaret",H
+BIOL,3350,2,Evolutionary Biology (HON),86%,14%,0%,0%,0%,0%,0%,0%,"Ptacek, Margaret",H
 BIOL,3940,3,CI: What is in our Waters?,,80%,0%,0%,20%,0%,0%,0%,0%,"Van den Hurk, Peter",
 BIOL,4010,1,Plant Physiology,,17%,20%,28%,21%,0%,0%,8%,7%,"Bielenberg, Douglas",
 BIOL,4020,1,Plant Physiology Lab,,67%,28%,6%,0%,0%,0%,0%,0%,"Bielenberg, Douglas",
@@ -38315,7 +38315,7 @@ BUS,1010,10,Business Foundations,31%,34%,21%,7%,0%,0%,0%,7%,"Tumblin, William Er
 BUS,1010,10,Business Foundations,31%,34%,21%,7%,0%,0%,0%,7%,"Edge, Sandy",
 BUS,1010,10,Business Foundations,31%,34%,21%,7%,0%,0%,0%,7%,"De Iulio, Edward Bar",
 Course Sections that meet the following conditions are not included: Undergraduate classes with less than 10 students or Graduate classes with less than 5,,,,,,,,,,,,,
-students.,"In addition, if a section has all but 1 student making a common grade (example: All but one student makes a ""B"" in a class), the section is excluded.",,,,,,,,,,,,
+students.,"In addition, if a section has all but 1 student mastatics (honking a common grade (example: All but one student makes a ""B"" in a class), the section is excluded.",,,,,,,,,,,,
 "Monday, September 23, 2019",,,,,,,,,,,,Page 20 of 119,
 Grades Report for 201901,,,,,,,,,,,,,
 Course,Numbe,Section,Course Title,A,B,C,D,F,P,F(P),W,Instructor,Honor
@@ -40830,7 +40830,7 @@ PKSC,4300,1,Converting Flex Pkg,,22%,65%,12%,0%,1%,0%,0%,0%,"Darby, Duncan O",
 PKSC,4400,1,Packaging for Distribution,,25%,45%,25%,3%,3%,0%,0%,0%,"Batt, Gregory S",
 PKSC,4400,400,Packaging for Distribution,,2%,47%,29%,8%,14%,0%,0%,0%,"Batt, Gregory S",
 PKSC,4640,1,Food & Health Care Pkg Systems,,63%,27%,10%,0%,0%,0%,0%,0%,"Cooksey, Kay D",
-PKSC,4990,3,CI-Packaging,Sci Seminar,92%,0%,0%,0%,0%,0%,0%,8%,"Hurley, Rupert A",
+PKSC,4990,3,CI-Packaging Sci Seminar,92%,0%,0%,0%,0%,0%,0%,8%,"Hurley, Rupert A",
 PKSC,8220,1,Packaging Dynamics,,75%,0%,0%,0%,0%,0%,0%,25%,"Batt, Gregory S",
 PLPA,2130,1,Fungi & Civilization,,34%,39%,14%,6%,3%,0%,0%,4%,"Kerrigan, Julia Loui",
 POSC,1010,2,Amer National Govt,,22%,44%,18%,7%,4%,0%,0%,4%,"Peake, Jeffrey Scott",
