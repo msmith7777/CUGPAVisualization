@@ -176,7 +176,7 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
     char* ptr = line;
     char buffer[1024];
     
-    while (*ptr != '\0' && *ptr != '\n' && *ptr != '\r' && tokenCount < maxTokens) {
+    while (*ptr != '\0' && *ptr != '\r' && tokenCount < maxTokens) {
         int bufIdx = 0;
         
         // Skip leading whitespace if any
@@ -207,8 +207,14 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
             if (*ptr == ',') ptr++;
             
         } else {
+            //If field is JUST \n, class is not honors
+            if (*ptr == '\n') {
+                buffer[bufIdx++] = 'N';
+                ptr++;
+            } else {
+            
             // Unquoted field - read until comma or end
-            while (*ptr != ',' && *ptr != '\0' && *ptr != '\n' && *ptr != '\r') {
+            while (*ptr != ',' && *ptr != '\n' && *ptr != '\0' && *ptr != '\r') {
                 buffer[bufIdx++] = *ptr++;
             }
             
@@ -218,6 +224,7 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
             }
             
             if (*ptr == ',') ptr++;
+            }
         }
         
         buffer[bufIdx] = '\0';
@@ -230,23 +237,31 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
 
 /*
 Argument is a line from the CSV. Extract useful information from the line, assign a Course to that data, 
-and return the pointer to the course. If class is pass-fail, return NULL.
+and return the pointer to the course. Account for 14 or 18 fields. If class is pass-fail, return NULL.
 */
 Course* parseLine(char* line) {
     //Big enough for either format
     char* tokens[25];
     int tokenCount = parseCSVLine(line, tokens, 25);
 
-    // Fix for extra blank column after course title that randomly happens
-    if (tokenCount > 5 && strlen(tokens[4]) == 0) {
-        for (int i = 4; i < tokenCount - 1; i++) {
-            free(tokens[i]);
-            tokens[i] = tokens[i + 1];
+    // Fix for extra comma that sometimes appears
+    if (tokenCount == 15 || tokenCount == 19) {
+    int i = 0;
+    while (i < tokenCount) {
+        if (strlen(tokens[i]) == 0) {
+            // Shift everything left
+            for (int j = i; j < tokenCount; j++) {
+                tokens[j] = tokens[j + 1];
+            }
+            tokenCount--;  // reduce count since we removed one
+            break;
+        } else {
+            i++;  // move to next token
         }
-        tokenCount--;
     }
+}
     
-    if (tokenCount < 13) {
+    if (tokenCount < 14) {
         for (int i = 0; i < tokenCount; i++) free(tokens[i]);
         return NULL;
     }
@@ -260,15 +275,9 @@ Course* parseLine(char* line) {
     int instructorIdx, honorIdx;
     double as, bs, cs, ds, fs, wrate;
     
-    if (tokenCount >= 17) {
-    // NEW FORMAT
-    if (tokenCount >= 18) {
-        instructorIdx = tokenCount - 2;
-        honorIdx = tokenCount - 1;
-    } else {
-        instructorIdx = tokenCount - 1;  // 16
-        honorIdx = tokenCount;           // 17 (doesn't exist)
-    }
+    if (tokenCount == 18) {
+        instructorIdx = 16;
+        honorIdx = 17;
     } else {
         // OLD FORMAT
         instructorIdx = 12;
@@ -289,15 +298,11 @@ Course* parseLine(char* line) {
     }
     
     double gpa = (as/100.0)*4 + (bs/100.0)*3 + (cs/100.0)*2 + (ds/100.0)*1;
-    
-    // Handle missing honors field
-    char* honors = (honorIdx < tokenCount) ? tokens[honorIdx] : strdup("");
-    
+
     Course* result = createCourse(tokens[0], tokens[1], tokens[3], 
                                  as, bs, cs, ds, fs, gpa, wrate, 
-                                 tokens[instructorIdx], honors);
-    
-    if (honorIdx >= tokenCount) free(honors);
+                                 tokens[instructorIdx], tokens[honorIdx]);
+
     
     for (int i = 0; i < tokenCount; i++) {
         free(tokens[i]);
@@ -358,14 +363,22 @@ fprintf(file, "[\n");
 }
 
 int main() {
+
+    setvbuf(stdout, NULL, _IONBF, 0);  // Turn off stdout buffering
+    printf("Program started.\n");
+
     FILE* inputFile = fopen("csv_files/2013csvs/combined2013.csv", "r");
     if (inputFile == NULL) {
         printf("Error: Could not open combined2013.csv\n");
         return 1;
     }
 
+    printf("Input file opened.\n");
+
     Course* head = createLL(inputFile);
     fclose(inputFile);
+
+    printf("Linked list succesfully created.\n");
 
     FILE* outputFile = fopen("output.json", "w");
     if (outputFile == NULL) {
@@ -373,6 +386,8 @@ int main() {
         freeList(head);
         return 1;
     }
+
+    printf("Wrote to json.\n");
 
     printLL(head, outputFile);
     fclose(outputFile);
