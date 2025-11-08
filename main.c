@@ -320,9 +320,9 @@ fprintf(file, "[\n");
 }
 
 int main() {
-    FILE* inputFile = fopen("grades.csv", "r");
+    FILE* inputFile = fopen("csv_files/combined.csv", "r");
     if (inputFile == NULL) {
-        printf("Error: Could not open grades.csv\n");
+        printf("Error: Could not open combined.csv\n");
         return 1;
     }
 
