@@ -236,6 +236,15 @@ Course* parseLine(char* line) {
     //Big enough for either format
     char* tokens[25];
     int tokenCount = parseCSVLine(line, tokens, 25);
+
+    // Fix for extra blank column after course title that randomly happens
+    if (tokenCount > 5 && strlen(tokens[4]) == 0) {
+        for (int i = 4; i < tokenCount - 1; i++) {
+            free(tokens[i]);
+            tokens[i] = tokens[i + 1];
+        }
+        tokenCount--;
+    }
     
     if (tokenCount < 13) {
         for (int i = 0; i < tokenCount; i++) free(tokens[i]);
@@ -349,9 +358,9 @@ fprintf(file, "[\n");
 }
 
 int main() {
-    FILE* inputFile = fopen("csv_files/combined.csv", "r");
+    FILE* inputFile = fopen("csv_files/2013csvs/combined2013.csv", "r");
     if (inputFile == NULL) {
-        printf("Error: Could not open combined.csv\n");
+        printf("Error: Could not open combined2013.csv\n");
         return 1;
     }
 
