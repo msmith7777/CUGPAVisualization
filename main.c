@@ -168,38 +168,64 @@ void addNode(Course** head, Course* node) {
 }
 
 /*
-Create a token seperated by commas from a line. If quotes are included, ignore commas within quotes.
-Return a pointer to the token. firstTime = 1 means it's the first time, anything else means it's not.
+Parse a CSV line into tokens, handling quotes and empty fields properly.
+Returns number of tokens parsed, or -1 on error.
 */
-char* tokenize(char* line, int firstTime) {
-    char* token = line;
-    char buff[1024];
-    if (firstTime == 1) {
-        token = strtok(line, ",");
-    } else token = strtok(NULL, ",");
-
-    if (token == NULL) return NULL;
-
-    if (token[0] == '"') {
-    //Skip opening quote
-    strcpy(buff, token + 1);
+int parseCSVLine(char* line, char* tokens[], int maxTokens) {
+    int tokenCount = 0;
+    char* ptr = line;
+    char buffer[1024];
     
-    while (buff[strlen(buff) - 1] != '"' && (token = strtok(NULL, ","))) {
-        strcat(buff, ",");
-        strcat(buff, token);
+    while (*ptr != '\0' && *ptr != '\n' && *ptr != '\r' && tokenCount < maxTokens) {
+        int bufIdx = 0;
+        
+        // Skip leading whitespace if any
+        while (*ptr == ' ') ptr++;
+        
+        // Check for quoted field
+        if (*ptr == '"') {
+            ptr++; // Skip opening quote
+            
+            while (*ptr != '\0' && *ptr != '\n') {
+                if (*ptr == '"') {
+                    // Check if it's escaped quote or end quote
+                    if (*(ptr + 1) == '"') {
+                        buffer[bufIdx++] = '"';
+                        ptr += 2;
+                    } else {
+                        // End of quoted field
+                        ptr++;
+                        break;
+                    }
+                } else {
+                    buffer[bufIdx++] = *ptr++;
+                }
+            }
+            
+            // Skip trailing spaces and comma
+            while (*ptr == ' ') ptr++;
+            if (*ptr == ',') ptr++;
+            
+        } else {
+            // Unquoted field - read until comma or end
+            while (*ptr != ',' && *ptr != '\0' && *ptr != '\n' && *ptr != '\r') {
+                buffer[bufIdx++] = *ptr++;
+            }
+            
+            // Remove trailing whitespace if any
+            while (bufIdx > 0 && buffer[bufIdx - 1] == ' ') {
+                bufIdx--;
+            }
+            
+            if (*ptr == ',') ptr++;
+        }
+        
+        buffer[bufIdx] = '\0';
+        tokens[tokenCount] = strdup(buffer);
+        tokenCount++;
     }
     
-    // Remove closing quote if present
-    if (buff[strlen(buff) - 1] == '"') {
-        buff[strlen(buff) - 1] = '\0';
-    }
-    
-    char* result = malloc(strlen(buff) + 1);
-    strcpy(result, buff);
-    return result;
-}
-
-    return strdup(token);
+    return tokenCount;
 }
 
 /*
@@ -207,64 +233,67 @@ Argument is a line from the CSV. Extract useful information from the line, assig
 and return the pointer to the course. If class is pass-fail, return NULL.
 */
 Course* parseLine(char* line) {
-    char* tokens[14];
-
-    tokens[0] = tokenize(line, 1);
-
-    if (tokens[0] == NULL) return NULL;
-
-    // Skip header line
+    //Big enough for either format
+    char* tokens[25];
+    int tokenCount = parseCSVLine(line, tokens, 25);
+    
+    if (tokenCount < 13) {
+        for (int i = 0; i < tokenCount; i++) free(tokens[i]);
+        return NULL;
+    }
+    
+    // Skip header
     if (strcmp(tokens[0], "Course") == 0) {
-        free(tokens[0]);
+        for (int i = 0; i < tokenCount; i++) free(tokens[i]);
         return NULL;
     }
+    
+    int instructorIdx, honorIdx;
+    double as, bs, cs, ds, fs, wrate;
+    
+    if (tokenCount >= 17) {
+    // NEW FORMAT
+    if (tokenCount >= 18) {
+        instructorIdx = tokenCount - 2;
+        honorIdx = tokenCount - 1;
+    } else {
+        instructorIdx = tokenCount - 1;  // 16
+        honorIdx = tokenCount;           // 17 (doesn't exist)
+    }
+    } else {
+        // OLD FORMAT
+        instructorIdx = 12;
+        honorIdx = 13;
+    }
 
-    for (int i = 1; i < 14; i++) {
-        tokens[i] = tokenize(line, 0);
+    as = atof(tokens[4]);
+    bs = atof(tokens[5]);
+    cs = atof(tokens[6]);
+    ds = atof(tokens[7]);
+    fs = atof(tokens[8]);
+    wrate = atof(tokens[11]);
         
-        if (tokens[i] == NULL) {
-            // If it's the honors field (last field), use empty string
-            if (i == 13) {
-                tokens[i] = strdup("");
-                break;
-            }
-            // Otherwise it's a malformed line
-            for (int j = 0; j < i; j++) {
-                free(tokens[j]);
-            }        
-            return NULL;
-        }
-    }
-    //Remove newlines from tokens.
-    for (int i = 0; i < 14; i++) {
-    size_t len = strlen(tokens[i]);
-    if (len > 0 && tokens[i][len - 1] == '\n') {
-        tokens[i][len - 1] = '\0';
-    }
-    }
-    //Classes are not pass/fail if they are entered as 0% in the CSV. If they are, they should be skipped
+    // Check pass/fail
     if (strcmp(tokens[9], "0%") != 0 || strcmp(tokens[10], "0%") != 0) {
-        for (int i = 0; i < 14; i++) {
-                free(tokens[i]);
-            }     
+        for (int i = 0; i < tokenCount; i++) free(tokens[i]);
         return NULL;
     }
-
-    double as = atof(tokens[4]);
-    double bs = atof(tokens[5]);
-    double cs = atof(tokens[6]);
-    double ds = atof(tokens[7]);
-    double fs = atof(tokens[8]);
-    double wrate = atof(tokens[11]);
     
     double gpa = (as/100.0)*4 + (bs/100.0)*3 + (cs/100.0)*2 + (ds/100.0)*1;
-
-    Course* result = createCourse(tokens[0], tokens[1], tokens[3], as, bs, cs, ds, fs, gpa, wrate, tokens[12], tokens[13]);
-
-    for (int i = 0; i < 14; i++) {
-                free(tokens[i]);
-            }
-            
+    
+    // Handle missing honors field
+    char* honors = (honorIdx < tokenCount) ? tokens[honorIdx] : strdup("");
+    
+    Course* result = createCourse(tokens[0], tokens[1], tokens[3], 
+                                 as, bs, cs, ds, fs, gpa, wrate, 
+                                 tokens[instructorIdx], honors);
+    
+    if (honorIdx >= tokenCount) free(honors);
+    
+    for (int i = 0; i < tokenCount; i++) {
+        free(tokens[i]);
+    }
+    
     return result;
 }
 
