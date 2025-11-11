@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 //Create struct to represent wanted data
 typedef struct Course{
@@ -98,6 +99,9 @@ char* normalize(const char *s) {
             lastWasSpace = 0;
         }
     }
+
+    *d = '\0';
+    return buf;
 }
 
 //Compares 2 names, truncated to the smallest. Return 1 if match, 0 if not.
@@ -107,12 +111,18 @@ int truncatedCmp(const char* a, const char* b) {
 
     int lenA = strlen(na);
     int lenB = strlen(nb);
+    
+    // If same length, do exact comparison
+    if (lenA == lenB) {
+        int res = strcmp(na, nb) != 0;
+        free(na);
+        free(nb);
+        return res;
+    }
+    
+    // Different lengths - check if shorter is prefix of longer
     int minLen = lenA < lenB ? lenA : lenB;
-
-    na[minLen] = '\0';
-    nb[minLen] = '\0';
-
-    int res = strcmp(na, nb) == 0;
+    int res = strncmp(na, nb, minLen) != 0;
 
     free(na);
     free(nb);
@@ -127,7 +137,7 @@ int crscmp(Course* crs1, Course* crs2) {
 
     int numCmp = strcmp(crs1 -> crs, crs2 -> crs);
     int crsNumberCmp = strcmp(crs1 -> crsNumber, crs2 -> crsNumber);
-    int instrCmp = truncatedcmp(crs1 -> instructor, crs2 -> instructor);
+    int instrCmp = truncatedCmp(crs1 -> instructor, crs2 -> instructor);
     int hnrsCmp = strcmp(crs1 -> honors, crs2 -> honors);
 
     if (numCmp == 0 && crsNumberCmp == 0 && instrCmp == 0 && hnrsCmp == 0){
@@ -223,7 +233,7 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
     char* ptr = line;
     char buffer[1024];
     
-    while (*ptr != '\0' && *ptr != '\r' && tokenCount < maxTokens) {
+    while (*ptr != '\0' && *ptr != '\r' && *ptr != '\n' && tokenCount < maxTokens) {
         int bufIdx = 0;
         
         // Skip leading whitespace if any
@@ -254,11 +264,6 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
             if (*ptr == ',') ptr++;
             
         } else {
-            //If field is JUST \n, class is not honors
-            if (*ptr == '\n') {
-                buffer[bufIdx++] = 'N';
-                ptr++;
-            } else {
             
             // Unquoted field - read until comma or end
             while (*ptr != ',' && *ptr != '\n' && *ptr != '\0' && *ptr != '\r') {
@@ -271,11 +276,18 @@ int parseCSVLine(char* line, char* tokens[], int maxTokens) {
             }
             
             if (*ptr == ',') ptr++;
-            }
+            
         }
         
         buffer[bufIdx] = '\0';
         tokens[tokenCount] = strdup(buffer);
+        tokenCount++;
+    }
+
+    if ((tokenCount == 13 || tokenCount == 14 || tokenCount == 17) && (*ptr == '\n' || *ptr == '\r')) {
+        if (tokenCount == 14 && strcmp(tokens[tokenCount - 1], "H") == 0) return tokenCount;
+
+        tokens[tokenCount] = strdup("N");
         tokenCount++;
     }
     
@@ -291,23 +303,6 @@ Course* parseLine(char* line) {
     char* tokens[25];
     int tokenCount = parseCSVLine(line, tokens, 25);
 
-    // Fix for extra comma that sometimes appears
-    if (tokenCount == 15 || tokenCount == 19) {
-    int i = 0;
-    while (i < tokenCount) {
-        if (strlen(tokens[i]) == 0) {
-            // Shift everything left
-            for (int j = i; j < tokenCount; j++) {
-                tokens[j] = tokens[j + 1];
-            }
-            tokenCount--;  // reduce count since we removed one
-            break;
-        } else {
-            i++;  // move to next token
-        }
-    }
-}
-    
     if (tokenCount < 14) {
         for (int i = 0; i < tokenCount; i++) free(tokens[i]);
         return NULL;
@@ -323,9 +318,14 @@ Course* parseLine(char* line) {
     double as, bs, cs, ds, fs, wrate;
     
     if (tokenCount == 18) {
+        //2nd OLD FORMAT
         instructorIdx = 16;
         honorIdx = 17;
-    } else {
+    } else if (tokenCount == 15) {
+        //NEW FORMAT
+        instructorIdx = 13;
+        honorIdx = 14;
+    } else if (tokenCount == 14) {
         // OLD FORMAT
         instructorIdx = 12;
         honorIdx = 13;
@@ -414,22 +414,22 @@ int main() {
     setvbuf(stdout, NULL, _IONBF, 0);  // Turn off stdout buffering
     printf("Program started.\n");
 
-    FILE* inputFile = fopen("csv_files/2013csvs/combined2013.csv", "r");
+    FILE* inputFile = fopen("csv_files/combined_csvs/combined_all.csv", "r");
     if (inputFile == NULL) {
-        printf("Error: Could not open combined2013.csv\n");
+        printf("Error: Could not open combined_all.csv\n");
         return 1;
     }
 
-    printf("Input file opened.\n");
+    printf("Input file opened. Creating linked list...\n");
 
     Course* head = createLL(inputFile);
     fclose(inputFile);
 
     printf("Linked list succesfully created.\n");
 
-    FILE* outputFile = fopen("output.json", "w");
+    FILE* outputFile = fopen("output_all.json", "w");
     if (outputFile == NULL) {
-        printf("Error: Could not open output.json\n");
+        printf("Error: Could not open output_all.json\n");
         freeList(head);
         return 1;
     }
@@ -441,6 +441,6 @@ int main() {
 
     freeList(head);
 
-    printf("Done! Check output.json\n");
+    printf("Done! Check output_all.json\n");
     return 0;
 }

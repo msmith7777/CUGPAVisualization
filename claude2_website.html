@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <Title>CU GPA Visualizer</Title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+
+        <style>
+            * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            }
+
+            body {
+                background: linear-gradient(135deg, #2E1A47 0%, #1a0f2e 100%);
+                background-attachment: fixed;
+                min-height: 100vh;
+            }
+
+            input::placeholder {
+                font-family: 'Roboto', sans-serif;
+                color: #999;
+            }
+
+            .main-main-body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 40px 20px;
+            }
+
+            .main-body {
+                display: flex;
+                flex-direction: column;
+                width: min(90%, 1200px);
+                margin-top: 20px;
+                padding: 40px;
+                background: rgba(255, 255, 255, 0.98);
+                border-radius: 16px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
+
+            .title-div {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .notes-div {
+                margin-top: 40px;
+            }
+
+            .notesp-div {
+                margin-top: 10px;
+            }
+
+            .title-thing {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 700;
+                font-size: 42px;
+                text-align: center;
+                width: 100%;
+                color: #2E1A47;
+                letter-spacing: -0.5px;
+            }
+
+            .small-header {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                font-size: 28px;
+                color: #D95700;
+                margin-bottom: 5px;
+                position: relative;
+                padding-bottom: 10px;
+            }
+
+            .small-header::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 60px;
+                height: 3px;
+                background: #D95700;
+                border-radius: 2px;
+            }
+
+            .basic-text {
+                font-family: 'Roboto', sans-serif;
+                margin-top: 15px;
+                font-size: 18px;
+                color: #444;
+                line-height: 1.8;
+            }
+
+            .search-flex {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                align-items: flex-end;
+                margin-top: 20px;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+            .searchbar-div, .dropdown-div {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mini-header {
+                font-family: 'Roboto', sans-serif;
+                font-weight: 600;
+                font-size: 14px;
+                color: #2E1A47;
+                margin-bottom: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .searchbar {
+                width: 350px;
+            }
+
+            .search-button-div {
+                display: flex;
+                align-items: flex-end;
+            }
+
+            .search-button {
+                background: linear-gradient(135deg, #D95700 0%, #b84800 100%);
+                color: white;
+                border: none;
+                padding: 12px 32px;
+                border-radius: 8px;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(217, 87, 0, 0.3);
+                font-family: 'Roboto', sans-serif;
+            }
+            
+            .search-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(217, 87, 0, 0.4);
+            }
+
+            .search-button:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 10px rgba(217, 87, 0, 0.3);
+            }
+
+            .searchbar {
+                width: 400px;
+                font-size: 18px;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                background-color: #fafafa;
+                padding: 12px 16px;
+                outline: none;
+                transition: all 0.3s ease;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .searchbar:focus {
+                border-color: #D95700;
+                background-color: white;
+                box-shadow: 0 0 0 3px rgba(217, 87, 0, 0.1);
+            }
+
+            select {
+                width: 160px;
+                height: 48px;
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                color: #2E1A47;
+                background-color: #fafafa;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 12px 16px;
+                outline: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-image: url("data:image/svg+xml;utf8,<svg fill='%232E1A47' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+                background-size: 20px;
+            }
+
+            select:focus {
+                border-color: #D95700;
+                background-color: white;
+                box-shadow: 0 0 0 3px rgba(217, 87, 0, 0.1);
+            }
+
+            select:hover {
+                border-color: #bbb;
+            }
+
+            option {
+                background-color: white;
+                color: #2E1A47;
+            }
+
+            .class-name-div {
+                margin-top: 30px;
+                padding: 20px;
+                background: linear-gradient(135deg, #2E1A47 0%, #3d2658 100%);
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .class-name {
+                font-family: 'Poppins', sans-serif;
+                font-size: 28px;
+                font-weight: 600;
+                color: white;
+                text-align: center;
+                margin: 0;
+            }
+
+            .instructors-grid {
+                margin-top: 25px;
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 20px;
+            }
+
+            .instructor-flex {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                background: white;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .instructor-flex:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                border-color: #D95700;
+            }
+
+            .instructor-element {
+                display: flex;
+                justify-content: space-between;
+                padding: 14px 20px;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .instructor-element:last-child {
+                border-bottom: none;
+            }
+
+            .instructor-element p {
+                margin: 0;
+                font-size: 15px;
+                color: #444;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .instructor-top-row {
+                display: flex;
+                gap: 15px;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                padding: 18px 20px;
+                align-items: center;
+            }
+
+            .instructor-top-row p {
+                margin: 0;
+                text-align: center;
+                font-weight: 600;
+                color: #2E1A47;
+            }
+
+            .instructor-top-row p.name {
+                flex: 2;
+                text-align: left;
+                font-size: 17px;
+                font-weight: 600;
+            }
+
+            .instructor-top-row p.sections {
+                flex: 1;
+                font-size: 14px;
+                color: #666;
+            }
+
+            .instructor-top-row p.honors {
+                flex: 0 0 30px;
+                background: #D95700;
+                color: white;
+                border-radius: 6px;
+                padding: 4px 0;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            .gpa-row {
+                background: #f8f9fa;
+            }
+
+            .gpa-row p:first-child {
+                font-weight: 600;
+                color: #2E1A47;
+                font-size: 16px;
+            }
+
+            .results-container {
+                display: none;
+            }
+
+            .results-container.show {
+                display: block;
+            }
+
+            .no-results {
+                font-family: 'Roboto', sans-serif;
+                font-size: 18px;
+                color: #666;
+                margin-top: 20px;
+                text-align: center;
+                padding: 40px;
+                background: #f8f9fa;
+                border-radius: 12px;
+            }
+
+            @media (max-width: 768px) {
+                .main-body {
+                    padding: 25px;
+                }
+
+                .title-thing {
+                    font-size: 32px;
+                }
+
+                .search-flex {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .searchbar {
+                    width: 100%;
+                }
+
+                select {
+                    width: 100%;
+                }
+
+                .search-button-div {
+                    width: 100%;
+                }
+
+                .search-button {
+                    width: 100%;
+                }
+
+                .instructors-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="main-main-body">
+        <div class="main-body">
+
+            <div class="title-div">
+                <p class="title-thing">
+                    Average GPAs by Instructor at Clemson University
+                </p>
+            </div>
+
+            <div class="notes-div">
+                <p class="small-header">
+                    Notes
+                </p>
+            </div>
+
+            <div class="notesp-div">
+                <p class="basic-text">
+                     When planning classes for an upcoming semester, Clemson's official grade distribution reports 
+                     can be a helpful tool for comparing professors and determining the difficulty of certain classes.
+                     However, the process of downloading multiple PDFs, locating a specific course or instructor in 
+                     each, and manually comparing course data can be tedious.
+                </p>
+
+                <p class="basic-text">
+                     This website aims to streamline this process by grouping past data by course and instructor and 
+                     calculating key statistics. Simply search for a specific course and compare average GPAs and 
+                     trends across specific classes.
+                </p>
+
+                <p class="basic-text">
+                     All data shown are averages taken using the known total amount of sections and the grade distributions
+                     of each section. Classes that are honors will have an "H" in the top right corner, with non-honors 
+                     classes having nothing. Entries will automatically be sorted from highest to lowest average GPA. 
+                     Increase the minimum number of sections if there are too many instructors with only one or two 
+                     sections.
+                </p>
+
+                <p class="basic-text">
+                     It should be noted that these statistics are <em>not</em> representative of a professor's teaching ability.
+                     A lot of the data has small sample sizes, and grading outcomes can vary widely due to factors 
+                     outside of anyone's control.
+                </p>
+            </div>
+
+            <div class="notes-div">
+                <p class="small-header">
+                    Find Class
+                </p>
+            </div>
+
+            <div class="search-flex">
+
+                <div class="searchbar-div">
+                    <p class="mini-header">Search</p>
+                    <input type="search" placeholder="e.g. ECE 2000" class="searchbar" id="courseSearch">
+                </div>
+
+                <div class="dropdown-div">
+                    <p class="mini-header">Min. Sections</p>
+                    <select id="minSections">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="search-button-div">
+                    <button class="search-button" id="searchBtn">Search</button>
+                </div>
+                
+            </div>
+
+            <div id="resultsContainer" class="results-container">
+                <div class="class-name-div">
+                    <p class="class-name" id="courseName"></p>
+                </div>
+
+                <div class="instructors-grid" id="instructorsGrid">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <script>
+            // Load course data from external JSON file
+            let courseData = [];
+
+            // Fetch the JSON file
+            fetch('output_all.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Could not load course data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    courseData = data;
+                    console.log('Course data loaded successfully:', courseData.length, 'entries');
+                })
+                .catch(error => {
+                    console.error('Error loading course data:', error);
+                    alert('Error loading course data. Please make sure courseData.json is in the same folder as this HTML file.');
+                });
+
+            const searchBtn = document.getElementById('searchBtn');
+            const courseSearch = document.getElementById('courseSearch');
+            const minSections = document.getElementById('minSections');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const courseName = document.getElementById('courseName');
+            const instructorsGrid = document.getElementById('instructorsGrid');
+
+            // Add enter key support for search
+            courseSearch.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+
+            searchBtn.addEventListener('click', function() {
+                const searchValue = courseSearch.value.trim().toUpperCase();
+                const minSectionsValue = parseInt(minSections.value);
+
+                if (!searchValue) {
+                    alert('Please enter a course code (e.g., ECE 2000)');
+                    return;
+                }
+
+                // Parse the search input (e.g., "ECE 2000" or "ECE2000")
+                const match = searchValue.match(/^([A-Z]+)\s*(\d+)$/);
+                
+                if (!match) {
+                    alert('Please enter a valid course code format (e.g., ECE 2000)');
+                    return;
+                }
+
+                const courseCode = match[1];
+                const courseNum = match[2];
+
+                // Filter data
+                let results = courseData.filter(item => 
+                    item.course === courseCode && 
+                    item.courseNumber === courseNum &&
+                    item.numSections >= minSectionsValue
+                );
+
+                // Sort by GPA (highest to lowest)
+                results.sort((a, b) => b.avgGpa - a.avgGpa);
+
+                // Display results
+                if (results.length > 0) {
+                    courseName.textContent = results[0].title;
+                    instructorsGrid.innerHTML = '';
+
+                    results.forEach(instructor => {
+                        const instructorCard = createInstructorCard(instructor);
+                        instructorsGrid.appendChild(instructorCard);
+                    });
+
+                    resultsContainer.classList.add('show');
+                } else {
+                    instructorsGrid.innerHTML = '<p class="no-results">No results found for the specified criteria.</p>';
+                    courseName.textContent = `${courseCode} ${courseNum}`;
+                    resultsContainer.classList.add('show');
+                }
+            });
+
+            function createInstructorCard(data) {
+                const card = document.createElement('div');
+                card.className = 'instructor-flex';
+
+                card.innerHTML = `
+                    <div class="instructor-element instructor-top-row">
+                        <p class="name">${data.instructor}</p>
+                        <p class="sections">${data.numSections} Section${data.numSections !== 1 ? 's' : ''}</p>
+                        <p class="honors">${data.honors ? 'H' : ''}</p>
+                    </div>
+
+                    <div class="instructor-element gpa-row">
+                        <p>GPA: ${data.avgGpa.toFixed(2)}</p>
+                        <p>Withdrawn: ${data.avgWRate.toFixed(0)}%</p>
+                    </div>
+
+                    <div class="instructor-element">
+                        <p>As: ${data.avgAs.toFixed(0)}%</p>
+                        <p>Bs: ${data.avgBs.toFixed(0)}%</p>
+                    </div>
+
+                    <div class="instructor-element">
+                        <p>Cs: ${data.avgCs.toFixed(0)}%</p>
+                        <p>Fs: ${data.avgFs.toFixed(0)}%</p>
+                    </div>
+                `;
+
+                return card;
+            }
+        </script>
+    </body>
+</html>

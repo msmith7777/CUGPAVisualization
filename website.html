@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <Title>CU GPA Visualizer</Title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/png" href="images/favicon.png">
+
+        <style>
+            * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            }
+
+            body {
+                background: #2E1A47;
+                background-image: url('images/ce534eb8-aac5-4ebb-9b14-b2383f22bdcb.jpg');
+                background-attachment: fixed;
+                background-size: cover;
+                background-blend-mode: multiply; 
+            }
+
+            input::placeholder {
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .main-main-body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .main-body {
+                display: flex;
+                flex-direction: column;
+                width: min(90%, 1200px);
+                margin-top: 30px;
+                padding: 30px;
+                background-color: whitesmoke;
+                border-radius: 2px;
+            }
+
+            .title-div {
+                width: 100%;
+            }
+
+            .notes-div {
+                margin-top: 30px;
+            }
+
+            .notesp-div {
+                margin-top: 10px;
+            }
+
+            .title-thing {
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                font-size: 35px;
+                text-align: center;
+                width: 100%;
+                color: #2E1A47;
+            }
+
+            .small-header {
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+                font-size: 25px;
+                color: #de630b;
+            }
+
+            .basic-text {
+                font-family: 'Roboto', sans-serif;
+                margin-top: 15px;
+                font-size: 20px;
+                color: #333;
+                line-height: 1.7;
+            }
+
+            .search-flex {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+                align-items: center;
+                margin-top: 15px;
+                gap: 15px;
+            }
+
+            .searchbar-div, .dropdown-div {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mini-header {
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+                font-size: 15px;
+                color: #2E1A47;
+                margin-bottom: 7px;
+            }
+
+            .searchbar {
+                width: 350px;
+            }
+
+            .search-button-div {
+                margin-top: 25px;
+            }
+
+            .search-button {
+                background: #D95700;
+                color: white;
+                border: none;
+                padding: 6px 20px;
+                border-radius: 2px;
+                font-size: 20px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.07s;
+            }
+            
+            .search-button:hover {
+                opacity: 0.8;
+            }
+
+            .search-button:active {
+                opacity: 0.6;
+            }
+
+            .searchbar {
+                width: 400px;
+                font-size: 20px;
+                border: solid;
+                border-color: #2E1A47;
+                border-width: 2px;
+                border-radius: 2px;
+                background-color: whitesmoke;
+                padding: 4px 8px;
+                outline: none;
+                transition: 0.15s;
+            }
+
+            .searchbar:focus {
+                border-color: #D95700;
+            }
+
+            select {
+                width: 150px;
+                height: 35px;
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                color: #2E1A47;
+                background-color: whitesmoke;
+                border: 2px solid #2E1A47;
+                border-radius: 2px;
+                padding: 4px 8px;
+                outline: none;
+                cursor: pointer;
+                transition: 0.15s;
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-image: url("data:image/svg+xml;utf8,<svg fill='%232E1A47' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+                background-repeat: no-repeat;
+                background-position: right 10px center;
+                background-size: 16px;
+            }
+
+            select:focus {
+                border-color: #D95700;
+                background-color: white;
+            }
+
+            option {
+                background-color: white;
+                color: #2E1A47;
+            }
+
+            .class-name-div {
+                margin-top: 25px;
+            }
+
+            .class-name {
+                font-family: 'Roboto', sans-serif;
+                font-size: 25px;
+                color: white;
+                background-color: #2E1A47;
+                padding: 4px 8px;
+                border-radius: 5px;
+            }
+
+            .instructors-grid {
+                margin-top: 15px;
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .instructor-flex {
+                display: flex;
+                flex-direction: column;
+                border: none;
+                gap: 10px;
+                outline: 1px solid transparent;
+                border: none;
+                box-shadow: 0px 0px 5px rgb(229, 229, 229);
+                border-radius: 8px;
+                background-color: #f9f9f9;
+                transition: 0.15s;
+            }
+
+            .instructor-flex:hover {
+                outline: 1px solid #d66214;
+            }
+
+            .instructor-element,
+            .instructor-element2 {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 15px;
+            }
+
+            .instructor-element p,
+            .instructor-element2 p {
+                font-family: 'Roboto', sans-serif;
+                margin: 0;
+                align-items: center;
+                font-size: 14px;
+                color: #2E1A47;
+            }
+
+            .instructor-element2 {
+                padding-bottom: 15px;
+            }
+
+            .instructor-top-row {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                background-color: rgb(238, 238, 238);
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                height: 50px;
+            }
+
+            .instructor-top-row p {
+                text-align: center;
+            }
+
+            .instructor-top-row p.name {
+                flex: 2;
+                text-align: left;
+                font-weight: bold;
+                font-size: 17px;
+            }
+
+            .instructor-top-row p.sections {
+                color: gray;
+            }
+
+            .instructor-top-row p.honors {
+                background: #D95700;
+                color: white;
+                border-radius: 6px;
+                padding: 4px 0;
+                font-size: 14px;
+                font-weight: 700;
+                width: 50px;
+            }
+
+            .instructor-top-row p.sections{
+                flex: 1;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="main-main-body">
+        <div class="main-body">
+
+            <div class="title-div">
+                <p class="title-thing">
+                    Average GPAs by Instructor at Clemson University
+                </p>
+            </div>
+
+            <div class="notes-div">
+                <p class="small-header">
+                    Notes
+                </p>
+            </div>
+
+            <div class="notesp-div">
+                <p class="basic-text">
+                     When planning classes for an upcoming semester, Clemson’s official grade distribution reports 
+                     can be a helpful tool for comparing professors and determining the difficulty of certain classes.
+                     However, the process of downloading multiple PDFs, locating a specific course or instructor in 
+                     each, and manually comparing course data can be tedious.
+                </p>
+
+                <p class="basic-text">
+                     This website aims to streamline this process by grouping past data by course and instructor and 
+                     calculating key statistics. Simply search for a specific course and compare average GPAs and 
+                     trends across specific classes.
+                </p>
+
+                <p class="basic-text">
+                     All data shown are averages taken using the known total amount of sections and the grade distributions
+                     of each section. Classes that are honors will have an "H" in the top right corner, with non-honors 
+                     classes having nothing. Entries will automatically be sorted from highest to lowest average GPA. 
+                     Increase the minimum number of sections if there are too many instructors with only one or two 
+                     sections.
+                </p>
+
+                <p class="basic-text">
+                     It should be noted that these statistics are <em>not</em> representative of a professor's teaching ability.
+                     A lot of the data has small sample sizes, and grading outcomes can vary widely due to factors 
+                     outside of anyone's control.
+                </p>
+            </div>
+
+            <div class="notes-div">
+                <p class="small-header">
+                    Find Class
+                </p>
+            </div>
+
+            <div class="search-flex">
+
+                <div class="searchbar-div">
+                    <p class="mini-header">SEARCH</p>
+                    <input type="search" placeholder="(e.g. ECE 2000)" class="searchbar" id="courseSearch">
+                </div>
+
+                <div class="dropdown-div">
+                    <p class="mini-header">MIN. SECTIONS</p>
+                    <select id="minSections">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="search-button-div">
+                    <button class="search-button" id="searchBtn">Search</button>
+                </div>
+                
+            </div>
+
+
+            <div id="resultsContainer" class="results-container">
+                <div class="class-name-div">
+                    <p class="class-name" id="courseName"></p>
+                </div>
+
+                <div class="instructors-grid" id="instructorsGrid">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <script>
+            // Load course data from external JSON file
+            let courseData = [];
+
+            // Fetch the JSON file
+            fetch('output2023.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Could not load course data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    courseData = data;
+                    console.log('Course data loaded successfully:', courseData.length, 'entries');
+                })
+                .catch(error => {
+                    console.error('Error loading course data:', error);
+                    alert('Error loading course data. Please make sure courseData.json is in the same folder as this HTML file.');
+                });
+
+            const searchBtn = document.getElementById('searchBtn');
+            const courseSearch = document.getElementById('courseSearch');
+            const minSections = document.getElementById('minSections');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const courseName = document.getElementById('courseName');
+            const instructorsGrid = document.getElementById('instructorsGrid');
+
+            // Add enter key support for search
+            courseSearch.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+
+            searchBtn.addEventListener('click', function() {
+                const searchValue = courseSearch.value.trim().toUpperCase();
+                const minSectionsValue = parseInt(minSections.value);
+
+                if (!searchValue) {
+                    alert('Please enter a course code (e.g., ECE 2000)');
+                    return;
+                }
+
+                // Parse the search input (e.g., "ECE 2000" or "ECE2000")
+                const match = searchValue.match(/^([A-Z]+)\s*(\d+)$/);
+                
+                if (!match) {
+                    alert('Please enter a valid course code format (e.g., ECE 2000)');
+                    return;
+                }
+
+                const courseCode = match[1];
+                const courseNum = match[2];
+
+                // Filter data
+                let results = courseData.filter(item => 
+                    item.course === courseCode && 
+                    item.courseNumber === courseNum &&
+                    item.numSections >= minSectionsValue
+                );
+
+                // Sort by GPA (highest to lowest)
+                results.sort((a, b) => b.avgGpa - a.avgGpa);
+
+                // Display results
+                if (results.length > 0) {
+                    courseName.textContent = results[0].title;
+                    instructorsGrid.innerHTML = '';
+
+                    results.forEach(instructor => {
+                        const instructorCard = createInstructorCard(instructor);
+                        instructorsGrid.appendChild(instructorCard);
+                    });
+
+                    resultsContainer.classList.add('show');
+                } else {
+                    instructorsGrid.innerHTML = '<p class="no-results">No results found for the specified criteria.</p>';
+                    courseName.textContent = `${courseCode} ${courseNum}`;
+                    resultsContainer.classList.add('show');
+                }
+            });
+
+            function createInstructorCard(data) {
+                const card = document.createElement('div');
+                card.className = 'instructor-flex';
+
+                card.innerHTML = `
+                    <div class="instructor-element instructor-top-row">
+                        <p class="name">${data.instructor}</p>
+                        <p class="sections">${data.numSections} Section${data.numSections !== 1 ? 's' : ''}</p>
+                        <p class="honors">${data.honors ? 'H' : ''}</p>
+                    </div>
+
+                    <div class="instructor-element">
+                        <p>GPA: ${data.avgGpa.toFixed(2)}</p>
+                        <p>Withdrawn: ${data.avgWRate.toFixed(0)}%</p>
+                    </div>
+
+                    <div class="instructor-element">
+                        <p>As: ${data.avgAs.toFixed(0)}%</p>
+                        <p>Bs: ${data.avgBs.toFixed(0)}%</p>
+                    </div>
+
+                    <div class="instructor-element2">
+                        <p>Cs: ${data.avgCs.toFixed(0)}%</p>
+                        <p>Fs: ${data.avgFs.toFixed(0)}%</p>
+                    </div>
+                `;
+
+                return card;
+            }
+        </script>
+    </body>
+</html>
