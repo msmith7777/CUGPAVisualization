@@ -4,3 +4,5 @@ This is a personal project created to maintain my coding ability and focus on re
 and extract useful information into a JSON file. That JSON file is then used by a front-end web interface to display data for specific courses based on user input.
 
 This project is still in progress and mainly intended for personal learning and experimentation.
+
+Website link: https://cugpavisualize.kesug.com/
