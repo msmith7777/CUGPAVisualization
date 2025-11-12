@@ -360,7 +360,7 @@
                 </div>
 
                 <div class="instructors-grid" id="instructorsGrid">
-                    <!-- Results will be dynamically inserted here -->
+                    <!-- Results will be inserted here with js-->
                 </div>
             </div>
 
@@ -368,11 +368,9 @@
         </div>
 
         <script>
-            // Load course data from external JSON file
             let courseData = [];
 
-            // Fetch the JSON file
-            fetch('output2023.json')
+            fetch('output_jsons/output2023.json')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Could not load course data');
@@ -395,7 +393,6 @@
             const courseName = document.getElementById('courseName');
             const instructorsGrid = document.getElementById('instructorsGrid');
 
-            // Add enter key support for search
             courseSearch.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     searchBtn.click();

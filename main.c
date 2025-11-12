@@ -411,7 +411,7 @@ fprintf(file, "[\n");
 
 int main() {
 
-    setvbuf(stdout, NULL, _IONBF, 0);  // Turn off stdout buffering
+    setvbuf(stdout, NULL, _IONBF, 0);
     printf("Program started.\n");
 
     FILE* inputFile = fopen("csv_files/combined_csvs/combined_all.csv", "r");
